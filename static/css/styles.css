@@ -1,0 +1,43 @@
+
+* {
+    font-family: 'Jua', sans-serif;
+}
+
+.reservation-form {
+    background-color: #FAF8F1;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px lightgray;
+    width: 400px;
+    padding: 30px;
+    margin: 100px auto;
+}
+
+.timetables-form {
+    width: 350px;
+}
+
+.time-select {
+    width: 300px;
+    margin: 20px 0px;
+}
+
+.top-menu {
+    margin: 10px 30px;
+}
+
+.homefit {
+    font-size: 2rem;
+}
+
+.reservation-picker {
+    width: 90%;
+    margin: 0px auto;
+}
+
+.timetables {
+    margin: 30px auto;
+}
+
+.reservation-list {
+    background-color: pink;
+}
