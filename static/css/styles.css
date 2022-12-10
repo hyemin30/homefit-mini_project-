@@ -18,7 +18,7 @@
 }
 
 .reservation-form {
-    background-color: #FAF8F1;
+    background: rgb(245, 241, 241);
     border-radius: 20px;
     box-shadow: 0px 0px 10px 0px lightgray;
     width: 400px;

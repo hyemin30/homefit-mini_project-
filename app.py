@@ -54,7 +54,7 @@ def reservation_confirm():
     member = "mini"
 
 
-    data = db.reservations.find_one({'member': member, 'date': date_receive, 'time': time_receive})
+    data = db.reservations.find_one({'member': member, 'date': date_receive, 'time': time_receive, 'statud':0})
     reservation_list = list(db.reservations.find({}, {'_id': False}))
     reservation_num = len(reservation_list) +1
 

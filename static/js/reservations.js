@@ -20,7 +20,7 @@ function show_reservations() {
 
                 if (response['msg'] == '일반회원') {
                     temp_html = `
-                    <div class="col-sm-3 reservation-card" style="max-width: 250px;">
+                    <div class="reservation-card" style="max-width: 250px;">
                         <div class="card bg-purple">
                             <div class="card-body reservation-content">
                                 <h5 class="card-header border-light  mb-3">${date}</h5>
@@ -33,7 +33,7 @@ function show_reservations() {
                     $('#reservation-list').append(temp_html);
                 } else {
                     temp_html = `
-                    <div class="col-sm-3 reservation-card" style="max-width: 250px;">
+                    <div class="reservation-card" style="max-width: 250px;">
                         <div class="card bg-purple">
                             <div class="card-body reservation-content">
                                 <h5 class="card-header border-light  mb-3">${date}</h5>
