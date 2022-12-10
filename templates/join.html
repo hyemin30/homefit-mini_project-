@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -16,6 +16,7 @@
           crossorigin="anonymous"></script>
 
   <title>회원가입</title>
+  <link rel="stylesheet" href="style.css">
 
   <style>
     .join {
@@ -42,7 +43,7 @@
       transform: translate(-50%, -50%);
     }
 
-    .check2{
+    .check2 {
       position: absolute;
       left: 48%;
       top: 59%;
@@ -107,7 +108,7 @@
       transform: translate(-50%, -50%);
     }
 
-    .yes{
+    .yes {
       position: absolute;
       left: 38%;
       top: 59%;
@@ -141,22 +142,10 @@
       height: 100px;
     }
 
-    .img-thumbnail {
-      border-color: lightgray;
-
-      position: absolute;
-      left: 50%;
-      top: 96%;
-      transform: translate(-50%, -50%);
-
-      width: 300px;
-      height: 300px;
-    }
-
     .finish {
       position: absolute;
       left: 50%;
-      top: 116%;
+      top: 140%;
       transform: translate(-50%, -50%);
 
       border-width: medium;
@@ -187,6 +176,81 @@
       height: 55px;
     }
 
+    .container {
+      background-color: transparent;
+      background-size: auto;
+
+      width: 800px;
+      height: 180px;
+
+      position: absolute;
+      left: 50%;
+      top: 85%;
+      transform: translate(-50%, -50%);
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .image-upload {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+    }
+
+    label {
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    #chooseFile {
+      visibility: hidden;
+    }
+
+    .fileContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .fileInput {
+      display: flex;
+      align-items: center;
+      border-bottom: solid 2px black;
+      width: 60%;
+      height: 30px;
+    }
+
+    #fileName {
+      margin-left: 5px;
+    }
+
+    .image-show {
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .prev {
+      position: absolute;
+      left: 50%;
+      top: 200%;
+      transform: translate(-50%, -50%);
+
+      width: 300px;
+      height: 300px;
+    }
+
   </style>
 
   <script>
@@ -200,17 +264,61 @@
     let select = 0 // 강사인지 일반회원인지 판별
 
     function choice() {
-        var obj_length = document.getElementsByName("checking").length;
+      var obj_length = document.getElementsByName("checking").length;
 
-        for (var i = 0; i < obj_length; i++) {
-          if (document.getElementsByName("checking")[i].checked == true) {
-            alert(document.getElementsByName("checking")[i].value);
-            select = i
-          }
+      for (var i = 0; i < obj_length; i++) {
+        if (document.getElementsByName("checking")[i].checked == true) {
+          alert(document.getElementsByName("checking")[i].value);
+          select = i
         }
       }
+    }
 
-    function save_info(){
+    var submit = document.getElementById('submitButton');
+    submit.onclick = showImage;     //Submit 버튼 클릭시 이미지 보여주기
+
+    function showImage() {
+      var newImage = document.getElementById('image-show').lastElementChild;
+      newImage.style.visibility = "visible";
+
+      document.getElementById('image-upload').style.visibility = 'hidden';
+
+      document.getElementById('fileName').textContent = null;     //기존 파일 이름 지우기
+    }
+
+
+    function loadFile(input) {
+      var file = input.files[0];
+
+      var name = document.getElementById('fileName');
+      name.textContent = file.name;
+
+      var newImage = document.createElement("img");
+      newImage.setAttribute("class", 'img');
+
+      newImage.src = URL.createObjectURL(file);
+
+      newImage.style.width = "70%";
+      newImage.style.height = "70%";
+      newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지 숨기기
+      newImage.style.objectFit = "contain";
+
+      var container = document.getElementById('image-show');
+      container.appendChild(newImage);
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        document.getElementById('preview').src = "";
+      }
+    };
+
+
+    function save_info() {
       let name = $('#name').val()
       let new_id = $('#new_id').val()
       let new_pw = $('#new_pw').val()
@@ -219,7 +327,7 @@
 
       let qualification = $('#qualification').val()
       let career = $('#career').val()
-      let img = $('#img').val()
+      let img = $('#preview').val()
 
       $.ajax({
         type: 'POST',
@@ -260,20 +368,20 @@
     <label>지역</label>
   </div>
 </div>
-  <div class="check">
-    <label class="checkbox">
-      <input type="checkbox" name="checking" value="강사" id="tutor_box" onclick="clickCheck(this)">
-      <span class="checkbox_icon"></span>
-      <span class="checkbox_text"></span>
-    </label>
-  </div>
-  <div class="check2">
-    <label class="checkbox">
-      <input type="checkbox" name="checking" value="일반회원" id="member_box" onclick="clickCheck(this)">
-      <span class="checkbox_icon"></span>
-      <span class="checkbox_text"></span>
-    </label>
-  </div>
+<div class="check">
+  <label class="checkbox">
+    <input type="checkbox" name="checking" value="강사" id="tutor_box" onclick="clickCheck(this)">
+    <span class="checkbox_icon"></span>
+    <span class="checkbox_text"></span>
+  </label>
+</div>
+<div class="check2">
+  <label class="checkbox">
+    <input type="checkbox" name="checking" value="일반회원" id="member_box" onclick="clickCheck(this)">
+    <span class="checkbox_icon"></span>
+    <span class="checkbox_text"></span>
+  </label>
+</div>
 <p class="yn">체크해주세요</p>
 <p class="yes">강사</p>
 <p class="no">일반회원</p>
@@ -288,8 +396,34 @@
     <label>경력</label>
   </div>
 </div>
-<img id="img" src="..." class="img-thumbnail" alt="이미지 삽입">
-<div onclick="save_info()"><button class="finish" type="submit">완료</button></div>
+<!--이미지 파일 불러오기-->
+<div class="container">
+  <div class="image-upload" id="image-upload">
+
+    <form method="post" enctype="multipart/form-data">
+      <div class="button">
+        <label for="chooseFile">
+          👉 사진 제출! <--클릭 👈
+        </label>
+      </div>
+      <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+      <img class="prev" id="preview"/>
+    </form>
+
+    <div class="fileContainer">
+      <div class="fileInput">
+        <p>파일명: </p>
+        <p id="fileName"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="image-show" id="image-show"></div>
+</div>
+<!---------------------->
+<div onclick="save_info()">
+  <button class="finish" type="submit">완료</button>
+</div>
 
 <button class="id_check" type="submit">중복확인</button>
 <button onclick="window.location.href='/'" class="back" type="submit">뒤로가기</button>
