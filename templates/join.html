@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+
+  <title>회원가입</title>
+
+  <style>
+    .join {
+      position: absolute;
+      left: 50%;
+      top: 12%;
+      transform: translate(-50%, -50%);
+    }
+
+    .information {
+      position: absolute;
+      left: 50%;
+      top: 28%;
+      transform: translate(-50%, -50%);
+
+      width: 500px;
+      height: 100px;
+    }
+
+    .check {
+      position: absolute;
+      left: 40%;
+      top: 59%;
+      transform: translate(-50%, -50%);
+    }
+
+    .check2{
+      position: absolute;
+      left: 48%;
+      top: 59%;
+      transform: translate(-50%, -50%);
+    }
+
+    .checkbox input {
+      display: none;
+    }
+
+    .checkbox_icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: transparent;
+      border: 1px solid red;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .checkbox_icon::before, .checkbox_icon::after {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 0;
+      background-color: black;
+      position: absolute;
+      transform-origin: left top;
+    }
+
+    .checkbox_icon::before {
+      top: 9px;
+      left: 2px;
+      transform: rotate(-45deg);
+    }
+
+    .checkbox_icon::after {
+      top: 16px;
+      left: 9px;
+      transform: rotate(-135deg);
+    }
+
+    .checkbox input:checked + .checkbox_icon {
+      border-color: red;
+    }
+
+    .checkbox input:checked + .checkbox_icon::before {
+      height: 10px;
+      transition: all 0.15s ease;
+
+    }
+
+    .checkbox input:checked + .checkbox_icon::after {
+      height: 20px;
+      transition: all 0.15s ease 0.15s;
+    }
+
+    .yn {
+      position: absolute;
+      left: 43%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+    }
+
+    .yes{
+      position: absolute;
+      left: 38%;
+      top: 59%;
+      transform: translate(-50%, -50%);
+    }
+
+    .no {
+      position: absolute;
+      left: 45%;
+      top: 59%;
+      transform: translate(-50%, -50%);
+    }
+
+    .btn-default {
+      position: absolute;
+      left: 55%;
+      top: 57%;
+      transform: translate(-50%, -50%);
+
+      border-width: medium;
+      border-color: black;
+    }
+
+    .tutor_info {
+      position: absolute;
+      left: 50%;
+      top: 68%;
+      transform: translate(-50%, -50%);
+
+      width: 500px;
+      height: 100px;
+    }
+
+    .img-thumbnail {
+      border-color: lightgray;
+
+      position: absolute;
+      left: 50%;
+      top: 96%;
+      transform: translate(-50%, -50%);
+
+      width: 300px;
+      height: 300px;
+    }
+
+    .finish {
+      position: absolute;
+      left: 50%;
+      top: 116%;
+      transform: translate(-50%, -50%);
+
+      border-width: medium;
+      border-color: black;
+      border-radius: 15px;
+
+      width: 100px;
+      height: 60px;
+    }
+
+    .id_check {
+      position: absolute;
+      left: 66%;
+      top: 33.5%;
+      transform: translate(-50%, -50%);
+
+      width: 80px;
+      height: 55px;
+    }
+
+    .back {
+      position: absolute;
+      left: 3%;
+      top: 4.5%;
+      transform: translate(-50%, -50%);
+
+      width: 80px;
+      height: 55px;
+    }
+
+  </style>
+
+  <script>
+    function clickCheck(target) {
+      document.querySelectorAll(`input[type=checkbox]`)
+              .forEach(el => el.checked = false);
+
+      target.checked = true;
+    }
+
+
+
+    function save_info(){
+      let name = $('#name').val()
+      let new_id = $('#new_id').val()
+      let new_pw = $('#new_pw').val()
+      let location = $('#location').val()
+      let choice = choiced()
+
+      function choiced() {
+        var obj_length = document.getElementsByName("checking").length;
+
+        for (var i = 0; i < obj_length; i++) {
+          if (document.getElementsByName("checking")[i].checked == true) {
+            alert(document.getElementsByName("checking")[i].value);
+          }
+          return document.getElementsByName("checking")[i].value
+        }
+      }
+
+      let qualification = $('#qualification').val()
+      let career = $('#career').val()
+      let img = $('#img').val()
+
+      $.ajax({
+        type: 'POST',
+        url: '/save',
+        data: {
+          name_give: name, new_id_give: new_id, new_pw_give: new_pw,
+          location_give: location, choice_give: choice, qualification_give: qualification,
+          career_give: career, img_give: img
+        },
+        success: function (response) {
+          alert(response['msg'])
+          window.location.reload()
+          window.location.href = '/'
+        }
+      })
+    }
+
+  </script>
+
+</head>
+<body>
+<h1 class="join">회원가입</h1>
+<div class="information">
+  <div class="form-floating mb-3">
+    <input id="name" type="email" class="form-control" placeholder="name@example.com">
+    <label>이름</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input name="username" id="new_id" type="email" class="form-control" placeholder="name@example.com">
+    <label>ID</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input id="new_pw" type="email" class="form-control" placeholder="name@example.com">
+    <label>PW</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input id="location" type="email" class="form-control" placeholder="name@example.com">
+    <label>지역</label>
+  </div>
+</div>
+  <div class="check">
+    <label class="checkbox">
+      <input type="checkbox" name="checking" value="강사" id="tutor_box" onclick="clickCheck(this)">
+      <span class="checkbox_icon"></span>
+      <span class="checkbox_text"></span>
+    </label>
+  </div>
+  <div class="check2">
+    <label class="checkbox">
+      <input type="checkbox" name="checking" value="일반회원" id="member_box" onclick="clickCheck(this)">
+      <span class="checkbox_icon"></span>
+      <span class="checkbox_text"></span>
+    </label>
+  </div>
+<p class="yn">체크해주세요</p>
+<p class="yes">강사</p>
+<p class="no">일반회원</p>
+<button onclick="choice()" class="btn btn-default" type="submit">확인</button>
+<div class="tutor_info">
+  <div class="form-floating mb-3">
+    <input id="qualification" type="email" class="form-control" placeholder="name@example.com">
+    <label>자격증</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input id="career" type="email" class="form-control" placeholder="name@example.com">
+    <label>경력</label>
+  </div>
+</div>
+<img id="img" src="..." class="img-thumbnail" alt="이미지 삽입">
+<div onclick="save_info()"><button class="finish" type="submit">완료</button></div>
+
+<button class="id_check" type="submit">중복확인</button>
+<button onclick="window.location.href='/'" class="back" type="submit">뒤로가기</button>
+</div>
+</body>
+</html>
