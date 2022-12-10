@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>오운완</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+            outline: none;
+            border: none;
+        }
+
+        body {
+            background-image: url("https://images.pexels.com/photos/533646/pexels-photo-533646.jpeg?auto=compress&cs=tinysrgb&w=1600");
+        }
+
+        .header_menu {
+            list-style: none;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header_menu > li {
+            margin: 10px 5% 0px 5%;
+        }
+
+        a:hover {
+            color: mediumaquamarine;
+        }
+
+        .menu_set {
+            text-decoration: none;
+            font-size: 32px;
+            color: lightblue;
+        }
+
+        .set {
+            width: 180px;
+            height: 40px;
+
+            border-radius: 5px;
+
+            margin: auto 10px auto 10px;
+
+            background-color: gray;
+            color: white;
+
+            font-size: 24px;
+            text-align: center;
+
+            cursor: pointer;
+        }
+
+        .btn {
+            width: 60%;
+            position: fixed;
+            left: 20%;
+            top: 20%;
+        }
+
+        .btn > button:hover {
+            background-color: black;
+        }
+
+        select:hover {
+            background-color: black;
+        }
+
+        .col {
+            margin: 30px;
+        }
+
+        .card > img {
+            width: auto;
+            height: 200px;
+        }
+
+        .card_box {
+            margin-top: 300px;
+            top: 400px;
+        }
+
+        .btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .set1 {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .set1 > button {
+            width: 70px;
+            margin: 10px;
+
+            background-color: lightblue;
+
+            color: white;
+
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            alert('새로고침됨')
+            $('#card_list').hide()
+        });
+
+        function show_tutor() {
+            $('#card_list').empty()
+            $('#card_list').show()
+            let type = $('#type').val()
+            let location = $('#location').val()
+            $.ajax({
+                type: "POST",
+                url: "/tutors/search",
+                data: {type_give: type, location_give: location},
+                success: function (response) {
+                    let rows = response['tutor']
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['name']
+                        let img = rows[i]['img']
+                        let num = rows[i]['num']
+                        let temp_html = `<div class="col">
+                                            <div class="card">
+                                                <img src="${img}" class="card-img-top" alt="...">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title" style="text-align: center">${name}</h5>
+                                                        <div class="set1">
+                                                            <button onclick="review('${name}')">리뷰</button>
+                                                            <button onclick="take2()">예약</button>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>`
+                        $('#card_list').append(temp_html)
+                    }
+                }
+            })
+        }
+
+        function addsample() {
+            let location = $('#slocation').val()
+            let url = $('#surl').val()
+            let name = $('#sname').val()
+            let training = $('#straining').val()
+
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "sample/add",
+                    data: {url_give: url, name_give: name, type_give: training, location_give: location},
+                    success: function (response) {
+                        window.location.reload()
+                    }
+                })
+            }
+        }
+
+        function reviewsample() {
+            let tutor = $('#tutor_name').val()
+            let member = $('#member_name').val()
+            let content = $('#review_content').val()
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "reviewSample/add",
+                    data: {tutor_give: tutor, member_give: member, content_give: content},
+                    success: function (response) {
+                        window.location.reload()
+                    }
+                })
+            }
+        }
+
+        function review(name) {
+            document.cookie = 'tutor_name' + '=' + name
+            window.open('review', 'review', 'width = 500px, height= 600px, top= 300px, left= 600px')
+        }
+
+        function take2() {
+            window.location.replace('reservation')
+        }
+    </script>
+</head>
+
+<body>
+
+<ul class="header_menu">
+    <li><a href="#" class="menu_set">메뉴1</a></li>
+    <li><a href="#" class="menu_set">예약</a></li>
+    <li><a href="#" class="menu_set">프로필</a></li>
+    <li><a href="#" class="menu_set">상담</a></li>
+</ul>
+
+
+<div class="btn">
+    <div>
+        <select class="set" id="type">
+            <option selected>운동</option>
+            <option value='체조'>체조</option>
+            <option value='댄스'>댄스</option>
+            <option value='피트니스'>피트니스</option>
+            <option value='이두'>이두</option>
+            <option value='복싱'>복싱</option>
+            <option value='하체'>하체</option>
+        </select>
+    </div>
+    <div>
+        <select class="set" id="location">
+            <option selected>지역</option>
+            <option value='서울'>서울</option>
+            <option value='부산'>부산</option>
+            <option value='대구'>대구</option>
+            <option value='인천'>인천</option>
+            <option value='광주'>광주</option>
+            <option value='대전'>대전</option>
+            <option value='세종'>세종</option>
+            <option value='경기도'>경기도</option>
+            <option value='강원도'>강원도</option>
+            <option value='충청북도'>충청북도</option>
+            <option value='충청남도'>충청남도</option>
+            <option value='전라북도'>전라북도</option>
+            <option value='전라남도'>전라남도</option>
+            <option value='경상북도'>경상북도</option>
+            <option value='경상남도'>경상남도</option>
+            <option value='제주도'>제주도</option>
+        </select>
+    </div>
+    <button class="set" onclick="show_tutor()">조회</button>
+</div>
+
+<!--<button onclick="addsample()">데이터 추가</button>-->
+<!--<input id="surl" placeholder="샘플url">-->
+<!--<input id="sname" placeholder="샘플 이름">-->
+<!--<input id="straining" placeholder="샘플 운동">-->
+<!--<input id="slocation" placeholder="샘플 지역">-->
+
+<!--<button onclick="reviewsample()">리뷰 추가</button>-->
+<!--<input id="tutor_name" placeholder="강사 이름">-->
+<!--<input id="member_name" placeholder="멤버 이름">-->
+<!--<input id="review_content" placeholder="리뷰 내용">-->
+
+<div class="card_box">
+    <div class="row row-cols-1 row-cols-md-6 g-4" id="card_list">
+    </div>
+</div>
+
+
+</body>
+
+</html>
