@@ -1,5 +1,3 @@
-
-
 function reservation(num) {
     $.ajax({
         type: "POST",
@@ -13,27 +11,33 @@ function reservation(num) {
 
 function show_timetables() {
     let date = $('#date').val()
-    $('#timetables').empty()
+    let select_date = new Date(date)
+    let today = new Date();
+    if (date == '' || select_date <= today ) {
+        alert('예약은 하루 전까지만 가능합니다')
+    } else {
+        $('#timetables').empty();
 
-    $.ajax({
-        type: 'POST',
-        url: '/reservation',
-        data: {'date_give': date},
-        success: function (response) {
-            let rows = response['timetables']
-            if (rows.length == 0) {
-                alert('예약 가능한 시간이 없습니다');
-            } else {
-                for (let i = 0; i < rows.length; i++) {
-                    let time = rows[i]['time'];
-                    let temp_html = `                  
+        $.ajax({
+            type: 'POST',
+            url: '/reservation',
+            data: {'date_give': date},
+            success: function (response) {
+                let rows = response['timetables']
+                if (rows.length == 0) {
+                    alert('예약 가능한 시간이 없습니다');
+                } else {
+                    for (let i = 0; i < rows.length; i++) {
+                        let time = rows[i]['time'];
+                        let temp_html = `                  
                    <button class="btn btn-outline-warning" onclick="reservation_confirm('${time}')">${time}</button>
                 `
-                    $('#timetables').append(temp_html);
+                        $('#timetables').append(temp_html);
+                    }
                 }
             }
-        }
-    });
+        });
+    }
 }
 
 function reservation_confirm(time) {
@@ -54,18 +58,10 @@ function reservation_confirm(time) {
     })
 }
 
-//예약조회화면
-function reservation_list(){
-    $.ajax({
-        type: "GET",
-        url: "/reservation/list",
-        data: {},
-        success: function (response) {
-            location.href = "/reservation/list"
-        }
-    })
+//예약조회화면이동
+function reservation_list() {
+    location.href = "/reservation/list"
 }
-
 
 //수업스케줄등록화면
 function timetables(){

@@ -14,73 +14,35 @@
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/reservations.js"></script>
 
 
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light top-menu">
-        <a class="navbar-brand homefit" href="/">HomeFit</a>
+<body class="reservation-list-body">
+<nav class="navbar navbar-expand-lg navbar-dark top-menu">
+    <a class="navbar-brand homefit" href="/">HomeFit</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 
-          <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link" href="">강사검색</a>
+                <a class="nav-link nav-right" href="">강사검색</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">로그아웃</a>
+                <a class="nav-link nav-right" href="">로그아웃</a>
             </li>
-          </ul>
-        </div>
-    </nav>
+        </ul>
+    </div>
+</nav>
 
-    <div class="row-cols-1 row-cols-md-3 g-4 reservation-list">
-         <div class="card">
-        <h5 class="card-header text-white bg-success mb-3">2022-12-10</h5>
-        <div class="card-body">
-            <h5 class="card-title">강사 : 김민지</h5>
-            <h5 class="card-title">시간 : 07:00</h5>
-            <a href="#" class="btn btn-outline-success btn-sm">예약취소</a>
-        </div>
-    </div>
- <div class="card">
-        <h5 class="card-header text-white bg-success mb-3">2022-12-10</h5>
-        <div class="card-body">
-            <h5 class="card-title">강사 : 김민지</h5>
-            <h5 class="card-title">시간 : 07:00</h5>
-            <a href="#" class="btn btn-outline-success btn-sm">예약취소</a>
-        </div>
-    </div>
- <div class="card">
-        <h5 class="card-header text-white bg-success mb-3">2022-12-10</h5>
-        <div class="card-body">
-            <h5 class="card-title">강사 : 김민지</h5>
-            <h5 class="card-title">시간 : 07:00</h5>
-            <a href="#" class="btn btn-outline-success btn-sm">예약취소</a>
-        </div>
-    </div>
- <div class="card">
-        <h5 class="card-header text-white bg-success mb-3">2022-12-10</h5>
-        <div class="card-body">
-            <h5 class="card-title">강사 : 김민지</h5>
-            <h5 class="card-title">시간 : 07:00</h5>
-            <a href="#" class="btn btn-outline-success btn-sm">예약취소</a>
-        </div>
-    </div>
- <div class="card">
-        <h5 class="card-header text-white bg-success mb-3">2022-12-10</h5>
-        <div class="card-body">
-            <h5 class="card-title">강사 : 김민지</h5>
-            <h5 class="card-title">시간 : 07:00</h5>
-            <a href="#" class="btn btn-outline-success btn-sm">예약취소</a>
-        </div>
-    </div>
+<div class="row reservation-list" id="reservation-list">
 
-    </div>
+</div>
+
 
 </body>
 </html>

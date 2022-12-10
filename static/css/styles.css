@@ -3,6 +3,20 @@
     font-family: 'Jua', sans-serif;
 }
 
+.reservation-body {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2015/07/02/10/22/training-828726_960_720.jpg');
+    background-size: cover;
+}
+
+.reservation-list-body {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2017/11/18/05/02/yoga-2959226_960_720.jpg');
+    background-size: cover;
+}
+.timetables-body {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2017/08/06/00/27/yoga-2587066_960_720.jpg');
+    background-size: cover;
+}
+
 .reservation-form {
     background-color: #FAF8F1;
     border-radius: 20px;
@@ -22,11 +36,16 @@
 }
 
 .top-menu {
-    margin: 10px 30px;
+    margin: 30px 80px;
+}
+
+.nav-right {
+    font-size: 1.5rem;
+     margin-right: 20px;
 }
 
 .homefit {
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
 
 .reservation-picker {
@@ -39,5 +58,30 @@
 }
 
 .reservation-list {
-    background-color: pink;
+    margin: 40px 50px;
+}
+
+.reservation-card {
+    margin-top: 30px;
+}
+
+.reservation-content {
+    align-items: center;
+    text-align: center;
+}
+
+.btn-cancel {
+    color: #BA94D1;
+    border-color: #BA94D1;
+    margin-top: 5px;
+    width: 100px;
+}
+
+.btn-cancel:hover {
+    background-color: #BA94D1;
+    color: white;
+}
+
+.bg-purple {
+    border-color: #DEBACE;
 }
