@@ -197,25 +197,25 @@
       target.checked = true;
     }
 
+    let select = 0 // 강사인지 일반회원인지 판별
 
+    function choice() {
+        var obj_length = document.getElementsByName("checking").length;
+
+        for (var i = 0; i < obj_length; i++) {
+          if (document.getElementsByName("checking")[i].checked == true) {
+            alert(document.getElementsByName("checking")[i].value);
+            select = i
+          }
+        }
+      }
 
     function save_info(){
       let name = $('#name').val()
       let new_id = $('#new_id').val()
       let new_pw = $('#new_pw').val()
       let location = $('#location').val()
-      let choice = choiced()
-
-      function choiced() {
-        var obj_length = document.getElementsByName("checking").length;
-
-        for (var i = 0; i < obj_length; i++) {
-          if (document.getElementsByName("checking")[i].checked == true) {
-            alert(document.getElementsByName("checking")[i].value);
-          }
-          return document.getElementsByName("checking")[i].value
-        }
-      }
+      let choice = select
 
       let qualification = $('#qualification').val()
       let career = $('#career').val()
