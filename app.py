@@ -158,53 +158,53 @@ def tutor_name():
 
     return jsonify({'tutor': tutor})
 
-
-@app.route("/sample/add", methods=["POST"])
-def sample_post():
-    url_receive = request.form['url_give']
-    name_receive = request.form['name_give']
-    type_receive = request.form['type_give']
-    location_receive = request.form['location_give']
-    id_receive = request.form['id_give']
-    password_receive = request.form['password_give']
-    career_receive = request.form['career_give']
-    qualification_receive = request.form['qualification_give']
-
-    num = len(list(db.tutors.find({}, {'_id': False}))) + 1
-
-    doc = {
-        'img': url_receive,
-        'name': name_receive,
-        'type': type_receive,
-        'location': location_receive,
-        'id': id_receive,
-        'password': password_receive,
-        'career': career_receive,
-        'qualification': qualification_receive,
-        'num': num
-    }
-
-    db.tutors.insert_one(doc)
-
-    return jsonify({'msg': '저장 성공'})
-
-
-@app.route("/reviewSample/add", methods=["POST"])
-def reviewsample_post():
-    tutor_receive = request.form['tutor_give']
-    member_receive = request.form['member_give']
-    content_receive = request.form['content_give']
-
-    doc = {
-        'tutor': tutor_receive,
-        'member': member_receive,
-        'content': content_receive,
-        'num': 1
-    }
-
-    db.reviews.insert_one(doc)
-
-    return jsonify({'msg': '저장 성공'})
+# todo 필요없음 지우기
+# @app.route("/sample/add", methods=["POST"])
+# def sample_post():
+#     url_receive = request.form['url_give']
+#     name_receive = request.form['name_give']
+#     type_receive = request.form['type_give']
+#     location_receive = request.form['location_give']
+#     id_receive = request.form['id_give']
+#     password_receive = request.form['password_give']
+#     career_receive = request.form['career_give']
+#     qualification_receive = request.form['qualification_give']
+#
+#     num = len(list(db.tutors.find({}, {'_id': False}))) + 1
+#
+#     doc = {
+#         'img': url_receive,
+#         'name': name_receive,
+#         'type': type_receive,
+#         'location': location_receive,
+#         'id': id_receive,
+#         'password': password_receive,
+#         'career': career_receive,
+#         'qualification': qualification_receive,
+#         'num': num
+#     }
+#
+#     db.tutors.insert_one(doc)
+#
+#     return jsonify({'msg': '저장 성공'})
+#
+#
+# @app.route("/reviewSample/add", methods=["POST"])
+# def reviewsample_post():
+#     tutor_receive = request.form['tutor_give']
+#     member_receive = request.form['member_give']
+#     content_receive = request.form['content_give']
+#
+#     doc = {
+#         'tutor': tutor_receive,
+#         'member': member_receive,
+#         'content': content_receive,
+#         'num': 1
+#     }
+#
+#     db.reviews.insert_one(doc)
+#
+#     return jsonify({'msg': '저장 성공'})
 
 
 @app.route("/reviewTutor", methods=["POST"])
@@ -329,11 +329,7 @@ def reservation_profile():
     tutor = list(db.members.find({'num': int(tutor_num),'choice':"0"}, {'_id': False}))
     return jsonify({'msg': '예약조회', 'tutor': tutor})
 
-    make_response().set_cookie('tutorNum', num_receive)
-    return jsonify({'msg': '예약조회'})
 
-
-#
 # 시간표 검색버튼
 @app.route('/reservation', methods=["POST"])
 def reservation():
@@ -357,7 +353,7 @@ def reservation_confirm():
     tutor_num = request.cookies.get("tutorNum")
     member = request.cookies.get("memberId")
     tutor = db.members.find_one({'num': int(tutor_num),'choice':"0"})['new_id']
-    member = "mini"
+    # member = "mini"
 
     data = db.reservations.find_one({'member': member, 'date': date_receive, 'time': time_receive, 'statud': 0})
     reservation_list = list(db.reservations.find({}, {'_id': False}))
@@ -446,7 +442,7 @@ def show_reservation():
     date_receive = request.form['date_give']
 
     find_member = db.members.find_one({'new_id': member})
-
+    print(member, find_member)
     choice = find_member['choice']
     datetime_format = "%Y-%m-%d"
     datetime_result = datetime.datetime.strptime(date_receive, datetime_format)
@@ -576,14 +572,19 @@ def cancel_review():
     db.review.delete_one({'num':int(num_receive)})
     return jsonify({'msg': '☠️ 삭제완료'})
 
-@app.route("/review", methods=["GET"])
+@app.route("/reviews", methods=["GET"])
 def review_get():
     tutor_num = request.cookies.get("tutorNum")
-    tutor = list(db.members.find({'num': int(tutor_num), 'choice':"0"}, {'_id': False}))
-
+    tutor = db.members.find_one({'num': int(tutor_num), 'choice':"0"})['new_id']
     review_list = list(db.review.find({'tutor':tutor},{'_id':False}))
+
     return jsonify({'reviews': review_list})
 
+@app.route("/reviews/profile", methods=["GET"])
+def review_profile():
+    tutor_num = request.cookies.get("tutorNum")
+    tutor = list(db.members.find({'num':int(tutor_num)},{'_id':False}))
+    return jsonify({'tutor': tutor})
 
 
 # 여기부터는 강사프로필
