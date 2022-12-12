@@ -8,25 +8,214 @@ import certifi
 from operator import itemgetter
 from datetime import datetime
 ca = certifi.where()
-client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
-db = client.homefit
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+# db = client.homefit
 
 app = Flask(__name__)
+
+client = MongoClient('mongodb+srv://test:sparta@cluster0.xpiwifp.mongodb.net/Cluster0?retryWrites=true&w=majority')
+db = client.dbsparta
+
+@app.route('/main')
+def main():
+    return render_template('main.html')
+
+@app.route('/advise')
+def advise():
+    return render_template('advise.html')
+
+@app.route('/advise/write')
+def advise_write():
+    return render_template('advise-write.html')
+
+@app.route('/advise/read')
+def advise_read():
+    return render_template('advise-read.html')
+
+@app.route('/review')
+def review():
+    return render_template('review.html')
+
+@app.route("/tutors/search", methods=["POST"])
+def tutors_post():
+    type_receive = request.form['type_give']
+    location_receive = request.form['location_give']
+
+    if type_receive == '운동' and location_receive == '지역':
+        tutor_list = list(db.tutors.find({}, {'_id': False}))
+    else:
+        tutor_list = list(db.tutors.find({'type': type_receive, 'location': location_receive}, {'_id': False}))
+
+    return jsonify({'tutor': tutor_list})
+
+@app.route("/review/name", methods=["POST"])
+def tutor_name():
+    num_receive = int(request.form['num_give'])
+
+    tutor = list(db.tutors.find({'num':num_receive},{'_id':False}))
+
+    return jsonify({'tutor': tutor})
+
+@app.route("/sample/add", methods=["POST"])
+def sample_post():
+    url_receive = request.form['url_give']
+    name_receive = request.form['name_give']
+    type_receive = request.form['type_give']
+    location_receive = request.form['location_give']
+    id_receive = request.form['id_give']
+    password_receive = request.form['password_give']
+    career_receive = request.form['career_give']
+    qualification_receive = request.form['qualification_give']
+
+    num = len(list(db.tutors.find({},{'_id':False}))) + 1
+
+    doc = {
+        'img': url_receive,
+        'name': name_receive,
+        'type': type_receive,
+        'location': location_receive,
+        'id': id_receive,
+        'password': password_receive,
+        'career': career_receive,
+        'qualification': qualification_receive,
+        'num': num
+    }
+
+    db.tutors.insert_one(doc)
+
+    return jsonify({'msg': '저장 성공'})
+
+@app.route("/reviewSample/add", methods=["POST"])
+def reviewsample_post():
+    tutor_receive = request.form['tutor_give']
+    member_receive = request.form['member_give']
+    content_receive = request.form['content_give']
+
+    doc = {
+        'tutor': tutor_receive,
+        'member': member_receive,
+        'content': content_receive,
+        'num': 1
+    }
+
+    db.reviews.insert_one(doc)
+
+    return jsonify({'msg': '저장 성공'})
+
+@app.route("/reviewTutor", methods=["POST"])
+def reviewTutor():
+    num_receive = int(request.form['num_give'])
+
+    reviews = list(db.reviews.find({'num':num_receive},{'_id':False}))
+
+    return jsonify({'review': reviews})
+
+@app.route("/advise/save", methods=["POST"])
+def advise_save():
+    cnt_receive = int(request.form['cnt_give'])  #cnt는 새로작성이 아닌 수정한 것 update해야됨
+    title_receive = request.form['title_give']
+    comment_receive = request.form['comment_give']
+    private_receive = int(request.form['private_give'])
+    member_receive = '테스트2'
+    member_id = 'test1234'
+
+    #member 이름과 아이디는 현재 접속중인 사람의 것을 넣음
+
+    if cnt_receive:
+        num = int(request.cookies['comment_num'])
+
+        db.advise.update_one({'num': num}, {'$set': {'title': title_receive}})
+        db.advise.update_one({'num': num}, {'$set': {'comment': comment_receive}})
+        db.advise.update_one({'num': num}, {'$set': {'private': private_receive}})
+
+        return jsonify({'msg': '상담이 완료 되었습니다!'})
+
+
+
+    temp = list(db.advise.find({}, {'_id': False}))
+    num = 0
+
+    if len(temp) == 0 :
+        num = 1
+    else :
+        for atemp in temp:
+            if atemp['num'] > num:
+                num = atemp['num']
+
+    doc = {
+        'title': title_receive,
+        'comment': comment_receive,
+        'member': member_receive,
+        'id': member_id,
+        'num': num + 1,
+        'private': private_receive
+    }
+
+    db.advise.insert_one(doc)
+
+    return jsonify({'msg': '상담이 완료 되었습니다!'})
+
+@app.route("/advise/show", methods=["GET"])
+def adviseShow():
+    advice = list(db.advise.find({},{'_id':False}))
+
+    return jsonify({'advice': advice})
+
+@app.route("/advise/show", methods=["POST"])
+def myadviseShow():
+    id_receive = request.form['id_give']
+
+    advice = list(db.advise.find({'id': id_receive}, {'_id': False}))
+
+    return jsonify({'advice': advice})
+
+@app.route("/comment/show", methods=["POST"])
+def commentShow():
+    num_receive = int(request.form['num_give'])
+
+    advice = list(db.advise.find({'num':num_receive},{'_id':False}))
+
+    return jsonify({'advice': advice})
+
+@app.route("/advise/comment/find", methods=["POST"])
+def commentFind():
+    num_receive = int(request.form['num_give'])
+
+    advice = list(db.advise.find({'num': num_receive}, {'_id': False}))
+
+    return jsonify({'advice': advice})
+
+@app.route("/advise/advice/delete", methods=["POST"])
+def adviceDelete():
+    num_receive = int(request.form['num_give'])
+
+    db.advise.delete_one({'num': num_receive})
+
+    return jsonify({'msg': '삭제 성공!'})
+
+@app.route("/advice/modify", methods=["POST"])
+def adviceModify():
+    num_receive = int(request.form['num_give'])
+
+    advice = list(db.advise.find({'num': num_receive},{'_id':False}))
+
+    return jsonify({'advice': advice})
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# 예약하기
+#예약하기
 @app.route('/tutors/reservation')
 def reservation_form():
     return render_template('reservation.html')
-
-# 예약화면으로 이동
+#
+# # 예약화면으로 이동
 @app.route('/tutors/reservation', methods=['POST'])
 def tutors_reservation():
     num_receive = request.form['num_give']
     make_response().delete_cookie('tutorNum')
+<<<<<<< HEAD:app_hm.py
     res = make_response(jsonify({'msg': "예약조회"}))
     res.set_cookie("tutorNum", num_receive)
     return res
@@ -39,6 +228,11 @@ def reservation_profile():
     return jsonify({'msg': '예약조회', 'tutor': tutor})
 
 
+=======
+    make_response().set_cookie('tutorNum', num_receive)
+    return jsonify({'msg': '예약조회'})
+#
+>>>>>>> origin/workspace:app.py
 # 시간표 검색버튼
 @app.route('/reservation', methods=["POST"])
 def reservation():
@@ -83,6 +277,7 @@ def reservation_confirm():
         return jsonify({'msg': '예약 완료'})
     else:
         return jsonify({'msg': '같은 시간에 다른 예약이 있습니다'})
+<<<<<<< HEAD:app_hm.py
 
 # # 예약조회화면
 # @app.route('/reservation/list')
@@ -136,6 +331,10 @@ def reservation_confirm():
 
 
 # 실험실 ######################################################
+=======
+#
+# 예약조회화면
+>>>>>>> origin/workspace:app.py
 @app.route('/reservation/list')
 def reservation_list():
     return render_template('reservations.html')
@@ -246,6 +445,9 @@ def timetables_add():
         else:
             return jsonify({'msg': '이미 등록하였습니다'})
 
+<<<<<<< HEAD:app_hm.py
 
+=======
+>>>>>>> origin/workspace:app.py
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
