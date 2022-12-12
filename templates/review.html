@@ -161,6 +161,11 @@
             window.open('/reviews')
             window.close()
         }
+
+        function review_close() {
+            window.close()
+
+        }
     </script>
 </head>
 
@@ -172,7 +177,7 @@
 </div>
 <div class="btn">
     <button style="background-color: lightblue" onclick="review_open()">리뷰 달기</button>
-    <button>닫기</button>
+    <button onclick="review_close()">닫기</button>
 </div>
 </body>
 

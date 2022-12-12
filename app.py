@@ -65,6 +65,9 @@ def save_info():
 
     pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
 
+    num = len(list(db.members.find({}, {'_id': False})))
+
+
     doc = {
         'name': name_receive,
         'new_id': new_id_receive,
@@ -74,7 +77,8 @@ def save_info():
         'qualification': qualification_receive,
         'career': career_receive,
         'img': img_receive,
-        'type': type_receive
+        'type': type_receive,
+        'num': num+1
     }
     db.members.insert_one(doc)
 
