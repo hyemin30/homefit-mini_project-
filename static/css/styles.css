@@ -12,9 +12,27 @@
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2017/11/18/05/02/yoga-2959226_960_720.jpg');
     background-size: cover;
 }
+
 .timetables-body {
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2017/08/06/00/27/yoga-2587066_960_720.jpg');
     background-size: cover;
+}
+
+.main-body {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.pexels.com/photos/533646/pexels-photo-533646.jpeg?auto=compress&cs=tinysrgb&w=1600");
+    background-size: cover;
+}
+
+.review-body {
+    background-color: darkseagreen;
+}
+
+.advise-body {
+    background-color: burlywood;
+}
+
+.advice-body {
+    background-color: lightblue;
 }
 
 .reservation-form {
@@ -30,6 +48,156 @@
     width: 350px;
 }
 
+.advise-form {
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    height: 70%;
+
+    background-color: white;
+}
+
+.advise-form > button:hover {
+    background-color: darksalmon;
+}
+
+.advise-title {
+    text-align: center;
+    font-size: 50px;
+    color: navajowhite;
+    cursor: default;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 2%;
+}
+
+.advice_list {
+    position: absolute;
+    width: 90%;
+    height: 80%;
+    left: 5%;
+    top: 16%;
+
+    overflow: auto;
+
+    box-shadow: 0px 0px 0px 2px navajowhite;
+}
+
+.advice_list::-webkit-scrollbar {
+    width: 30px;
+}
+
+.advice_list::-webkit-scrollbar-thumb {
+    background-color: navajowhite;
+}
+
+.advice_list::-webkit-scrollbar-thumb:active {
+    background-color: burlywood;
+}
+
+.advices {
+    height: 15%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0px 0px 0px 2px navajowhite;
+    padding: 10px;
+
+    font-size: 30px;
+    color: navajowhite;
+    cursor: default;
+}
+
+.advices > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.advice_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    cursor: default;
+}
+
+.advice_form > div {
+    border-radius: 5px;
+}
+
+.advice_title {
+    height: 60px;
+    width: 90%;
+    left: 5%;
+    background-color: white;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.advice_comment {
+    height: 300px;
+    margin-top: 20px;
+    width: 90%;
+    left: 5%;
+    background-color: white;
+    padding: 10px;
+}
+
+.advise-btn {
+    font-size: 20px;
+    width: 10%;
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    color: white;
+    background-color: navajowhite;
+    border-radius: 5px;
+}
+
+.advise-list {
+    font-size: 20px;
+    width: 12%;
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    color: white;
+    background-color: navajowhite;
+    border-radius: 5px;
+}
+
+.advice-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.advice-btn > button {
+    border: none;
+    border-radius: 5px;
+    width: 10%;
+
+    color: white;
+
+    margin-right: 5%;
+}
+
 .time-select {
     width: 300px;
     margin: 20px 0px;
@@ -41,7 +209,7 @@
 
 .nav-right {
     font-size: 1.5rem;
-     margin-right: 20px;
+    margin-right: 20px;
 }
 
 .homefit {
