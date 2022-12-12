@@ -44,7 +44,7 @@ body{
     /*background: linear-gradient(74deg, rgba(238,126,195,1) 9%, rgba(149,175,213,0.981127485173757) 100%);*/
     width: 550px;
     min-width: 550px;
-    margin: 0px 50px 0px 70px;
+    margin: 30px 70px 0px 200px;
     padding: 20px 0px 20px 25px;
     border-radius: 10px;
 }
