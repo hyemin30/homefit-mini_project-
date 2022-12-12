@@ -134,6 +134,7 @@
         }
 
         function review(num) {
+            // document.cookie = "tutorNum=" + num;
             $.cookie('tutorNum', num);   //리뷰창으로 강사의 번호를 넘김
             window.open('review', 'review', 'width = 500px, height= 600px, top= 300px, left= 600px')
         }

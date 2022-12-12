@@ -145,10 +145,11 @@
             $('#review-list').empty()
             $.ajax({
                 type: "GET",
-                url: "/reviews",
+                url: "/myreviews",
                 data: {},
                 success: function (response) {
                     let rows = response['reviews']
+                    console.log(rows)
                     for (let i = 0; i < rows.length; i++) {
                         let review = rows[i]['review']
                         let num = rows[i]['num']
@@ -206,7 +207,7 @@
                     let tutor = response['tutor']
                     console.log(tutor[0])
                     let img = tutor[0]['img']
-                    let id = tutor[0]['new_id']
+                    let name = tutor[0]['name']
                     let location = tutor[0]['location']
                     let qualification = tutor[0]['qualification']
                     let career = tutor[0]['career']
@@ -214,10 +215,10 @@
                     let temp_html0 = `<img src="${img}"
                                         class="img-fluid rounded-start" alt="tutor_name">`
 
-                    let temp_html = `   <h3 class="card-title" style="color: black">${id} - ${type} 강사</h3>
-                                        <h5 class="card-text" style="color: lightslategrey">지역 : ${location}</h5><br>
-                                        <h5 class="card-text" style="color: lightslategrey">경력 : ${career}</h5><br>
-                                        <h5 class="card-text" style="color: lightslategrey">자격 : ${qualification}</h5>`
+                    let temp_html = `   <h2 class="card-title" style="color: black">${name} - ${type} 강사</h2>
+                                        <h4 class="card-text" style="color: lightslategrey">지역 : ${location}</h4><br>
+                                        <h4 class="card-text" style="color: lightslategrey">경력 : ${career}</h4><br>
+                                        <h4 class="card-text" style="color: lightslategrey">자격 : ${qualification}</h4>`
 
                     $('#review-profile-img').append(temp_html0)
                     $('#review-profile').append(temp_html)

@@ -549,19 +549,24 @@ def cancel_review():
     db.review.delete_one({'num':int(num_receive)})
     return jsonify({'msg': '☠️ 삭제완료'})
 
-@app.route("/reviews", methods=["GET"])
+@app.route("/myreviews", methods=["GET"])
 def review_get():
+    print('리뷰함수호출')
     tutor_num = request.cookies.get("tutorNum")
+    member = request.cookies.get("memberId")
+    print(tutor_num, member)
     tutor = db.members.find_one({'num': int(tutor_num), 'choice':"0"})['new_id']
-    review_list = list(db.review.find({'tutor':tutor},{'_id':False}))
-
+    review_list = list(db.review.find({'tutor':tutor, 'member':member},{'_id':False}))
+    print(review_list)
     return jsonify({'reviews': review_list})
 
 @app.route("/reviews/profile", methods=["GET"])
 def review_profile():
     tutor_num = request.cookies.get("tutorNum")
+
     tutor = list(db.members.find({'num':int(tutor_num)},{'_id':False}))
     return jsonify({'tutor': tutor})
+
 
 
 # 여기부터는 강사프로필

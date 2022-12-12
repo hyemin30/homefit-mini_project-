@@ -134,7 +134,7 @@
                     let rows = response['review']
                     console.log(rows)
                     if (rows.length == 0) {
-                        del_cookie()
+                        // del_cookie()
                         return alert('리뷰가 없습니다')
                     }
                     for (let i = 0; i < rows.length; i++) {
@@ -154,7 +154,7 @@
                     }
                 }
             })
-            del_cookie();
+            // del_cookie();
         }
 
         function review_open() {
