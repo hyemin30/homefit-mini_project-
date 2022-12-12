@@ -21,14 +21,14 @@
     .join {
       position: absolute;
       left: 50%;
-      top: 12%;
+      top: 5%;
       transform: translate(-50%, -50%);
     }
 
     .information {
       position: absolute;
       left: 50%;
-      top: 28%;
+      top: 18%;
       transform: translate(-50%, -50%);
 
       width: 500px;
@@ -38,14 +38,14 @@
     .check {
       position: absolute;
       left: 40%;
-      top: 59%;
+      top: 58%;
       transform: translate(-50%, -50%);
     }
 
     .check2 {
       position: absolute;
       left: 48%;
-      top: 59%;
+      top: 58%;
       transform: translate(-50%, -50%);
     }
 
@@ -103,21 +103,21 @@
     .yn {
       position: absolute;
       left: 43%;
-      top: 55%;
+      top: 54%;
       transform: translate(-50%, -50%);
     }
 
     .yes {
       position: absolute;
       left: 38%;
-      top: 59%;
+      top: 58%;
       transform: translate(-50%, -50%);
     }
 
     .no {
       position: absolute;
       left: 45%;
-      top: 59%;
+      top: 58%;
       transform: translate(-50%, -50%);
     }
 
@@ -160,7 +160,7 @@
     .id_check {
       position: absolute;
       left: 66%;
-      top: 33.5%;
+      top: 31%;
       transform: translate(-50%, -50%);
 
       width: 80px;
@@ -170,7 +170,7 @@
     .pw_check {
       position: absolute;
       left: 66%;
-      top: 41%;
+      top: 39%;
       transform: translate(-50%, -50%);
 
       width: 80px;
@@ -310,18 +310,6 @@
       }
     }
 
-    var submit = document.getElementById('submitButton');
-    submit.onclick = showImage;     //Submit 버튼 클릭시 이미지 보여주기
-
-    function showImage() {
-      var newImage = document.getElementById('image-show').lastElementChild;
-      newImage.style.visibility = "visible";
-
-      document.getElementById('image-upload').style.visibility = 'hidden';
-
-      document.getElementById('fileName').textContent = null;     //기존 파일 이름 지우기
-    }
-
     function loadFile(input) {
       var file = input.files[0];
 
@@ -363,7 +351,6 @@
         data: {},
         success: function (response) {
           let rows = response['id_lists']
-          alert(rows)
 
           if (id === ''){
             alert("아이디를 입력하세요.")
@@ -402,13 +389,17 @@
       } else if (num < 0 || eng < 0 || spe < 0) {
         alert("비밀번호는 영문,숫자, 특수문자를 혼합하여 입력해주세요.");
         return false;
+      } else if ($('#new_pw').val() !== $('#double_pw').val()) {
+        alert("비밀번호가 일치하지 않습니다.")
+        return false
       } else {
         alert("통과");
         return true;
       }
     }
 
-    function save_info() {
+    //-------------------------------------------------------
+    function save_info() { //혜민님 이 함수 부분만 보시면 될 것 같아요
       let new_id = $('#new_id').val()
       if (new_id === ''){
         alert("아이디를 입력하세요.")
@@ -484,8 +475,12 @@
     <label>ID</label>
   </div>
   <div class="form-floating mb-3">
-    <input id="new_pw" type="email" class="form-control" placeholder=" ">
+    <input id="new_pw" type="password" class="form-control" placeholder=" ">
     <label>PW</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input id="double_pw" type="password" class="form-control" placeholder=" ">
+    <label>PW 확인</label>
   </div>
   <div class="form-floating mb-3">
     <input id="location" type="email" class="form-control" placeholder=" ">
