@@ -424,7 +424,7 @@ def show_reservation():
             data = list(
                 db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
             member_reservations = sorted(data, key=itemgetter('date', 'time'))
-            return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations, 'name':name})
+            return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations})
         else:
             data = list(
                 db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
