@@ -105,6 +105,10 @@ function show_navbar() {
                 
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link  nav-right" href="/profile"">프로필수정</a>
+                
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link nav-right" href="/logout">로그아웃</a>
                             </li>`
                 $('#nav-item').append(temp_html)

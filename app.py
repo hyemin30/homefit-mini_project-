@@ -574,20 +574,42 @@ def review_profile():
 
 
 # 여기부터는 강사프로필
-@app.route("/profile", methods=["POST"])
+@app.route('/profile')
+def profile():
+    return render_template('tutorprofile.html')
+
+# @app.route("/profile", methods=["POST"])
+# def profile_post():
+#     tutorname_receive = request.form['tutorname_give']
+#     qualifications_receive = request.form['qualifications_give']
+#     career_receive = request.form['career_give']
+#     inputstate_receive = request.form['inputstate_give']
+#
+#     doc = {
+#         'tutorname':tutorname_receive,
+#         'qualifications':qualifications_receive,
+#         'career':career_receive,
+#         'inputstate':inputstate_receive
+#     }
+#     db.tutor_porfile.insert_one(doc)
+#     return jsonify({'msg':'✅ 등록 완료!'})
+
+@app.route("/profile_save", methods=["POST"])
 def profile_post():
     tutorname_receive = request.form['tutorname_give']
     qualifications_receive = request.form['qualifications_give']
     career_receive = request.form['career_give']
     inputstate_receive = request.form['inputstate_give']
+    num = request.cookies.get('tutorNum')
 
-    doc = {
-        'tutorname':tutorname_receive,
-        'qualifications':qualifications_receive,
-        'career':career_receive,
-        'inputstate':inputstate_receive
-    }
-    db.tutor_porfile.insert_one(doc)
+    print(inputstate_receive)
+    db.members.update_one({'num': int(num)}, {'$set': {
+        'name': tutorname_receive,
+        'qualification': qualifications_receive,
+        'career': career_receive,
+        'type': inputstate_receive
+    }})
+
     return jsonify({'msg':'✅ 등록 완료!'})
 
 

@@ -215,16 +215,17 @@
             let tutorname = $('#tutorname').val()
             let qualifications = $('#qualifications').val()
             let career = $('#career').val()
-            let inputstate = $('#inputstate').val()
+            let inputstate = $('#inputState').val()
+            console.log(tutorname,qualifications,career,inputstate)
 
             $.ajax({
                 type: 'POST',
                 url: '/profile_save',
                 data: {
-                    tutorname_give: tutorname,
-                    qualifications_give: qualifications,
-                    career_give: career,
-                    inputstate_give: inputstate
+                    'tutorname_give': tutorname,
+                    'qualifications_give': qualifications,
+                    'career_give': career,
+                   'inputstate_give': inputstate
                 },
                 success: function (response) {
                     alert(response['msg'])
@@ -300,11 +301,11 @@
                 <label for="inputState" class="form_es_type">운동종류</label>
                 <select id="inputState" class="form-select">
                     <option selected>Choose...</option>
-                    <option>PT 강사</option>
-                    <option>요가강사</option>
-                    <option>필라테스강사</option>
-                    <option>재활치료사</option>
-                    <option>기타</option>
+                    <option value="pt">피트니스 강사</option>
+                    <option value="yoga">요가강사</option>
+                    <option value="filates">필라테스강사</option>
+                    <option value="rhb">재활치료사</option>
+                    <option value="etc">기타</option>
                 </select>
             </div>
             <p></p>
