@@ -203,7 +203,7 @@ def advise_save():
     num = 0
 
     if len(temp) == 0:
-        num = 1
+        num = 0
     else:
         for atemp in temp:
             if atemp['num'] > num:
@@ -234,7 +234,6 @@ def adviseShow():
 def myadviseShow():
     id_receive = request.cookies.get("memberId")
     advice = list(db.advise.find({'id': id_receive}, {'_id': False}))
-    print('나의 상담', advice)
     return jsonify({'advice': advice})
 
 
@@ -278,6 +277,14 @@ def adviceModify():
     db.advise.update_one({'num': num_receive}, {'$set': {'private': private_receive}})
 
     return jsonify({'msg': '상담이 완료 되었습니다!'})
+
+@app.route("/advise/modify", methods=["POST"])
+def adviseModify():
+    num_receive = int(request.form['num_give'])
+
+    advice = list(db.advise.find({'num': num_receive},{'_id':False}))
+
+    return jsonify({'advice': advice})
 
 
 # 이혜민
