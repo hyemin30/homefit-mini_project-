@@ -1,6 +1,7 @@
 
 $(document).ready(function () {
     check_member()
+    show_navbar()
 });
 
 function reservation(num) {
@@ -74,5 +75,13 @@ function check_member() {
 }
 
 function show_navbar() {
+     $.ajax({
+        type: "GET",
+        url: "/getcookie",
+        data: {},
+        success: function (response) {
+            let user = response['user']
 
+        }
+    })
 }
