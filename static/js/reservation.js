@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    check_member()
+    show_navbar()
     show_profile();
 });
 

@@ -208,7 +208,7 @@ def advise_save():
     doc = {
         'title': title_receive,
         'comment': comment_receive,
-        'member': member_receive,
+        'member': member_receive['name'],
         'id': member_id,
         'num': num + 1,
         'private': private_receive
@@ -230,7 +230,7 @@ def adviseShow():
 def myadviseShow():
     id_receive = request.cookies.get("memberId")
     advice = list(db.advise.find({'id': id_receive}, {'_id': False}))
-
+    print('나의 상담', advice)
     return jsonify({'advice': advice})
 
 
@@ -239,8 +239,9 @@ def commentShow():
     num_receive = int(request.form['num_give'])
 
     advice = list(db.advise.find({'num': num_receive}, {'_id': False}))
+    id_receive = request.cookies.get("memberId")
 
-    return jsonify({'advice': advice})
+    return jsonify({'advice': advice, 'cookie':id_receive})
 
 
 @app.route("/advise/comment/find", methods=["POST"])

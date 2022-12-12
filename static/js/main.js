@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     check_member()
     show_navbar()
@@ -75,13 +74,42 @@ function check_member() {
 }
 
 function show_navbar() {
-     $.ajax({
+    $.ajax({
         type: "GET",
         url: "/getcookie",
         data: {},
         success: function (response) {
+            $('#nav-item').empty()
             let user = response['user']
+            if (user == '일반') {
+                temp_html = `<li class="nav-item">
+                                <a class="nav-link nav-right" href="/main">강사검색</a>
+                            </li>
+                              <li class="nav-item">
+                                <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  nav-right" href="advise">상담하기</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-right" href="/logout">로그아웃</a>
+                            </li>`
+                $('#nav-item').append(temp_html)
+            } else if (user == '강사') {
+                temp_html = `
+                              <li class="nav-item">
+                                <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  nav-right" onclick="timetables()">수업등록</a>
+                
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-right" href="/logout">로그아웃</a>
+                            </li>`
+                $('#nav-item').append(temp_html)
 
+            }
         }
     })
 }
