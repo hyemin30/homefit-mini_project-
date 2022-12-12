@@ -1,17 +1,33 @@
 $(document).ready(function () {
-    check_member()
+    // check_member()
     show_navbar()
 });
 
 function reservation(num) {
-    $.ajax({
-        type: "POST",
-        url: "/tutors/reservation",
-        data: {'num_give': num},
+     $.ajax({
+        type: "GET",
+        url: "/getcookie",
+        data: {},
         success: function (response) {
-            location.href = "/tutors/reservation"
+            let user = response['user'];
+            if (user == '일반') {
+                $.ajax({
+                    type: "POST",
+                    url: "/tutors/reservation",
+                    data: {'num_give': num},
+                    success: function (response) {
+                        location.href = "/tutors/reservation"
+                    }
+                });
+            } else {
+                alert('일반회원만 이용 가능합니다')
+            }
         }
     })
+
+
+
+
 }
 
 
@@ -92,7 +108,7 @@ function show_navbar() {
                                 <a class="nav-link  nav-right" href="advise">상담하기</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-right" href="/logout">로그아웃</a>
+                                <a class="nav-link nav-right" onclick="logout()">로그아웃</a>
                             </li>`
                 $('#nav-item').append(temp_html)
             } else if (user == '강사') {
@@ -109,11 +125,22 @@ function show_navbar() {
                 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-right" href="/logout">로그아웃</a>
+                                <a class="nav-link nav-right" onclick="logout()">로그아웃</a>
                             </li>`
                 $('#nav-item').append(temp_html)
 
             }
         }
     })
+}
+
+function logout() {
+     $.ajax({
+        type: "GET",
+        url: "/logout",
+        data: {},
+        success: function (response) {
+            location.href = "/"
+        }
+    });
 }

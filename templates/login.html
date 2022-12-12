@@ -93,6 +93,7 @@
                 success: function (response) {
                     if (response['result'] === 'success') {
                         document.cookie = "memberId=" + response['member_id'];
+                        document.cookie = "user=" + response['user'];
                         window.location.href = '/main'
                         $.cookie('mytoken', response['token']);
 
