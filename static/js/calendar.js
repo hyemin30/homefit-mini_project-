@@ -234,11 +234,18 @@ Day.addEventListener('click',(event)=>{
                     let num = rows[i]['num']
                     let temp_html = ``
 
-                    temp_html = `<h3> 시간 : ${time} </h3>
+                    if (response['msg'] == '일반회원') {
+                        temp_html = `<h3> 시간 : ${time} </h3>
                                 <h3> 강사 : ${tutor} </h3>
                                 <button class="btn btn-cancel" onclick="cancel(${num})"> 예약취소 </button><hr>
-                               `
-                    $('#reservation-text').append(temp_html)
+                               `;
+                    } else {
+                        temp_html = `<h3> 시간 : ${time} </h3>
+                                <h3> 회원 : ${member} </h3>
+                                <button class="btn btn-cancel" onclick="cancel(${num})"> 예약취소 </button><hr>
+                               `;
+                    }
+                    $('#reservation-text').append(temp_html);
                 }
 
             }

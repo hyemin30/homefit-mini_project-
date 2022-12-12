@@ -135,13 +135,20 @@ def reservation_list():
 @app.route('/reservation/show',  methods=["POST"])
 def show_reservation():
     # todo member_id 쿠키로 가져오기
-    member_id = 'mini'
+    member_id = 'minji'
     date_receive = request.form['date_give']
 
-    member_reservations = list(db.reservations.find({'member':member_id, 'date':date_receive, 'status':0}, {'_id': False}))
-    print(reservation_list)
+    find_tutor = db.tutors.find_one({'id': member_id})
+    find_member = db.members.find_one({'id': member_id})
 
-    return jsonify({'msg': '조회되나?','reservations':member_reservations})
+    if find_tutor is None:
+        data = list(db.reservations.find({"member": find_member['id'], 'date':date_receive, 'status': 0}, {'_id': False}))
+        member_reservations = sorted(data, key=itemgetter('date', 'time'))
+        return jsonify({'msg': '일반회원','reservations': member_reservations})
+    else:
+        data = list(db.reservations.find({"tutor": find_tutor['id'], 'date':date_receive, 'status': 0}, {'_id': False}))
+        tutors_reservation = sorted(data, key=itemgetter('date', 'time'))
+        return jsonify({'msg': '강사회원','reservations': tutors_reservation})
 #################################################################################
 
 # 예약취소
