@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+    <title>tutorprofile</title>
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        body {
+
+            /*backdrop-filter: blur(5px) brightness(200%);*/
+
+            height: 100%;
+            width: 100%;
+            background-color: #1D1E23;
+            color: white;
+
+        }
+
+
+        .line_bar {
+
+            background-color: #1D1E23;
+            width: 220px;
+            height: 8px;
+
+        }
+
+        .mypic_tp {
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2014/04/24/17/56/fitness-studio-331569_1280.jpg');
+            background-position: 0px -380px;
+            background-size: cover;
+            background-attachment: fixed;
+
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypic_tp > h1 {
+            font-size: 30px;
+        }
+
+
+
+        .click {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: center;
+            margin: 10px;
+
+        }
+        button + button{
+            margin-left: 10px;
+        }
+
+
+        .aaa {
+            margin: 20px;
+
+
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: center;
+        }
+        .info_box {
+            height: 800px;
+            width: 400px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-content: center;
+
+        }
+        .a_col-md-12 {
+            display: flex;
+            flex-direction: row;
+
+        }
+        .form_es_type{
+            margin-right: 37px;
+
+
+        }
+        .form-select{
+            width: 300px;
+
+        }
+
+
+        .uploadImg {
+            height: 800px;
+            width: 400px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+
+        }
+
+        img#previewImg {
+            height: 500px;
+            width: 350px;
+            cursor: pointer;
+            max-height: 500px;
+            max-width: 350px;
+            object-fit: cover;
+            display: flex;
+            justify-content: flex-start;
+            z-index: 1;
+            border: 1px solid gray;
+            border-radius: 10px;
+
+
+        }
+        .img_text{
+            position: relative;
+				top: -250px;
+                rightt: 20px
+        }
+
+        .filebox {
+            display: block;
+            margin: 10px;
+            margin-right: 10px;
+            bottom: 94px
+
+        }
+
+        .filebox label {
+            display: inline-block;
+            padding: 4px 8px;
+            margin-left: 5px;
+            color: #999;
+            font-size: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            border-radius: .25em;
+            cursor: pointer;
+            color: #fff;
+            background-color: #895fc0;
+            border: 1px solid #683d8b;
+        }
+
+        .filebox input[type="file"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .filebox .upload-name {
+            display: inline-block;
+            padding: 0.3em 0.4em;
+            font-size: inherit;
+            font-family: inherit;
+            line-height: normal;
+            vertical-align: middle;
+            background-color: #f5f5f5;
+            border: 1px solid #ebebeb;
+            border-bottom-color: #e2e2e2;
+            border-radius: .25em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+
+    </style>
+    <script>
+
+        function uploading_files() {
+            let file = files[0]; //실제 파일
+            let image = files[0].name; //파일명
+            let desc = $('#input_feed_content').val(); //이미지 밑에 쓴 글
+            console.log(image)
+            let formData = new FormData();
+            formData.append('file_give', file)
+            formData.append('image_give', image)
+            formData.append('desc_give', desc)
+            $.ajax({
+                type: 'POST',
+                url: '/profile',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg'])
+                        window.location.href = '/'
+                    } else {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                },
+                error: function (err) {
+                    console.log('error:' + err)
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            //파일첨부 이벤트
+            $('.filebox .upload-hidden').on('change', function () {
+                if (window.FileReader) {
+                    var filename = $(this)[0].files[0].name;
+                    if (!validFileType(filename)) {
+                        alert("허용하지 않는 확장자 파일입니다.");
+                        return false;
+                    } else {
+                        if (!validFileSize($(this)[0].files[0])) {
+                            alert("파일 사이즈가 10MB를 초과합니다.");
+                            return false;
+                        } else {
+                            if (!validFileNameSize(filename)) {
+                                alert("파일명이 30자를 초과합니다.");
+                                return false;
+                            }
+                        }
+                    }
+                } else {
+                    var filename = $(this).val().split('/').pop().split('\\').pop();
+                }
+                $(this).prev().val(filename); //input upload-name 에 파일명 설정해주기
+
+                readImage($(this)[0]); //미리보기
+            });
+        });
+
+        function validFileType(filename) {
+            const fileTypes = ["png", "jpg", "jpeg"];
+            return fileTypes.indexOf(filename.substring(filename.lastIndexOf(".") + 1, filename.length).toLowerCase()) >= 0;
+        }
+
+        function validFileSize(file) {
+            if (file.size > 10000000) { //10MB
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function validFileNameSize(filename) {
+            if (filename.length > 30) { //30자
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        //이미지 띄우기
+        function readImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById("previewImg");
+                    previewImage.src = e.target.result;
+                }
+                // reader가 이미지 읽도록 하기
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        //이미지 원본 팝업 띄우기
+        function popImage(url) {
+            var img = new Image();
+            img.src = url;
+            var img_width = img.width;
+            var win_width = img.width + 25;
+            var img_height = img.height;
+            var win = img.height + 30;
+            var popup = window.open('', '_blank', 'width=' + img_width + ', height=' + img_height + ', menubars=no, scrollbars=auto');
+            popup.document.write("<style>body{margin:0px;}</style><img src='" + url + "' width='" + win_width + "'>");
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="mypic_tp">
+    <table class="line_bar">
+        <tr>
+            <!--                <th>blank</th>-->
+        </tr>
+    </table>
+    <p></p>
+    <h1>강사 프로필 등록</h1>
+</div>
+<div class="aaa">
+
+    <div class="info_box">
+
+
+        <form class="row g-3">
+
+            <div class="col-md-12">
+                <label for="tutorname" class="form-label">이름</label>
+                <input type="email" class="form-control" id="tutorname" placeholder="name">
+            </div>
+            <div class="col-md-12">
+                <label for="qualifications" class="form-label">자격사항</label>
+                <textarea class="form-control" id="qualifications" rows="5" placeholder="qualifications"></textarea>
+
+            </div>
+            <div class="col-md-12">
+                <label for="career" class="form-label">경력사항</label>
+                <textarea class="form-control" id="career" rows="5" placeholder="career"></textarea>
+
+            </div>
+            <div class="a_col-md-12">
+                <label for="inputState" class="form_es_type" >운동종류</label>
+                <select id="inputState" class="form-select">
+                    <option selected>Choose...</option>
+                    <option>PT 강사</option>
+                    <option>요가강사</option>
+                    <option>필라테스강사</option>
+                    <option>재활치료사</option>
+                    <option>기타</option>
+                </select>
+            </div>
+            <p></p>
+            <div class="click">
+                <button type="button" class="btn btn-secondary">Save changes</button>
+                <button type="button" class="btn btn-outline-secondary">Cancel</button>
+            </div>
+
+        </form>
+    </div>
+    <div class="upload_box">
+        <div class="uploadImg">
+            <img id="previewImg" onclick="popImage(this.src)">
+            <div class="img_text">no image</div>
+            <div class="filebox">
+                <input class="upload-name" value="선택된 파일 없음" disabled="disabled">
+                <input type="file" id="file1" class="upload-hidden" name="file1">
+                <label for="file1">이미지 첨부</label>
+            </div>
+        </div>
+    </div>
+
+    </table>
+
+
+</div>
+
+</body>
+</html>
