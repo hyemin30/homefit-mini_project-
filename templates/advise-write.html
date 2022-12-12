@@ -19,12 +19,6 @@
 
     <title>💪홈핏 | 상담쓰기</title>
     <script>
-        $(document).ready(function () {
-            if($.cookie('comment_ck')) {
-                modify()
-            }
-        })
-
         function advice_close() {
             window.close()
         }
@@ -42,17 +36,13 @@
             if($('#on_off').text() == '공개') {
                 private = 0
             }
-            let cnt = 0
-            if($.cookie('comment_ck')) {
-                cnt = 1
-                $.removeCookie('comment_ck');
-            }
             $.ajax({
                 type: "POST",
                 url: "/advise/save",
-                data: {title_give: title, comment_give: comment, private_give: private, cnt_give: cnt},
+                data: {title_give: title, comment_give: comment, private_give: private},
                 success: function (response) {
                     alert(response['msg'])
+                    window.opener.location.reload()
                     window.close()
                 }
             })
@@ -65,26 +55,12 @@
                 $('#on_off').text('공개')
             }
         }
-
-        function modify() {
-            let num = $.cookie('comment_num')
-            console.log(num)
-            $.ajax({
-                type: "POST",
-                url: "/advice/modify",
-                data: {num_give: num},
-                success: function (response) {
-                    $('#title').val(response['advice'][0]['title'])
-                    $('#comment').text(response['advice'][0]['comment'])
-                }
-            })
-        }
     </script>
 </head>
 
 <body class="advice-body">
 <a class="navbar-brand homefit" style="color: white; cursor: pointer" onclick="window.close()">HomeFit</a>
-<h1 style="font-size: 28px; text-align: center; color: white">상담 글 쓰기</h1>
+<h1 style="font-size: 28px; text-align: center; color: white; cursor: default">상담 글 쓰기</h1>
 <div class="form-check form-switch" style="position: absolute; left: 85%; top: 80px">
   <input onclick="on_off()" class="form-check-input" type="checkbox" id="private_check" checked>
   <label class="form-check-label" for="private_check" style="color: white"><span id="on_off">공개</span></label>

@@ -44,7 +44,7 @@
 
         .btn {
             width: 60%;
-            position: fixed;
+            position: absolute;
             left: 20%;
             top: 20%;
 
@@ -134,7 +134,6 @@
         }
 
         function review(num) {
-            // document.cookie = "tutorNum=" + num;
             $.cookie('tutorNum', num);   //리뷰창으로 강사의 번호를 넘김
             window.open('review', 'review', 'width = 500px, height= 600px, top= 300px, left= 600px')
         }
@@ -154,20 +153,7 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 
         <ul class="navbar-nav ms-auto" id="nav-item">
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link  nav-right" onclick="timetables()">수업등록</a>-->
 
-<!--            </li>-->
-
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link  nav-right" href="reservation/list">예약조회</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link  nav-right" href="advise">상담하기</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link nav-right" href="">로그아웃</a>-->
-<!--            </li>-->
         </ul>
     </div>
 </nav>
