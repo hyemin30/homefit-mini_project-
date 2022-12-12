@@ -1,3 +1,8 @@
+
+$(document).ready(function () {
+    check_member()
+});
+
 function reservation(num) {
     $.ajax({
         type: "POST",
@@ -55,3 +60,19 @@ function schedule() {
     }
 }
 
+//회원, 강사 구분
+function check_member() {
+    $.ajax({
+        type: "GET",
+        url: "/checkmember",
+        data: {},
+        success: function (response) {
+            let msg = response['msg']
+            document.cookie = "user=" + msg;
+        }
+    })
+}
+
+function show_navbar() {
+
+}

@@ -23,6 +23,17 @@ db = client.homefit
 SECRET_KEY = 'SPARTA'
 
 
+# navbar control
+@app.route('/checkmember')
+def checkmember():
+    member_id = request.cookies.get('memberId')
+    member = db.members.find_one({'new_id': member_id})
+
+    if member['choice'] == "1":
+        return jsonify({'msg': '일반'})
+    else:
+        return jsonify({'msg': '강사'})
+
 # 김현우
 @app.route('/')
 def home():
@@ -284,11 +295,7 @@ def reservation_profile():
     tutor = list(db.members.find({'num': int(tutor_num),'choice':"0"}, {'_id': False}))
     return jsonify({'msg': '예약조회', 'tutor': tutor})
 
-    make_response().set_cookie('tutorNum', num_receive)
-    return jsonify({'msg': '예약조회'})
 
-
-#
 # 시간표 검색버튼
 @app.route('/reservation', methods=["POST"])
 def reservation():
@@ -312,7 +319,7 @@ def reservation_confirm():
     tutor_num = request.cookies.get("tutorNum")
     member = request.cookies.get("memberId")
     tutor = db.members.find_one({'num': int(tutor_num),'choice':"0"})['new_id']
-    member = "mini"
+    # member = "mini"
 
     data = db.reservations.find_one({'member': member, 'date': date_receive, 'time': time_receive, 'statud': 0})
     reservation_list = list(db.reservations.find({}, {'_id': False}))
@@ -401,7 +408,7 @@ def show_reservation():
     date_receive = request.form['date_give']
 
     find_member = db.members.find_one({'new_id': member})
-
+    print(member, find_member)
     choice = find_member['choice']
     datetime_format = "%Y-%m-%d"
     datetime_result = datetime.datetime.strptime(date_receive, datetime_format)
@@ -411,12 +418,12 @@ def show_reservation():
             data = list(
                 db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
             member_reservations = sorted(data, key=itemgetter('date', 'time'))
-            print(member_reservations)
-            return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations})
+            return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations, 'name':name})
         else:
             data = list(
                 db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
             tutors_reservation = sorted(data, key=itemgetter('date', 'time'))
+
             return jsonify({'msg': '강사회원', 'status': '과거', 'reservations': tutors_reservation})
     else:
         if choice == "1":
@@ -531,47 +538,69 @@ def cancel_review():
     db.review.delete_one({'num':int(num_receive)})
     return jsonify({'msg': '☠️ 삭제완료'})
 
-@app.route("/review", methods=["GET"])
+@app.route("/reviews", methods=["GET"])
 def review_get():
     tutor_num = request.cookies.get("tutorNum")
-    tutor = list(db.members.find({'num': int(tutor_num), 'choice':"0"}, {'_id': False}))
-
+    tutor = db.members.find_one({'num': int(tutor_num), 'choice':"0"})['new_id']
     review_list = list(db.review.find({'tutor':tutor},{'_id':False}))
+
     return jsonify({'reviews': review_list})
 
+@app.route("/reviews/profile", methods=["GET"])
+def review_profile():
+    tutor_num = request.cookies.get("tutorNum")
+    tutor = list(db.members.find({'num':int(tutor_num)},{'_id':False}))
+    return jsonify({'tutor': tutor})
 
 
 # 여기부터는 강사프로필
 @app.route("/profile", methods=["POST"])
-def profile():
-    current_time = datetime.datetime.now()
-    image_receive = request.form['image_give']
-    desc_receive = request.form['desc_give']
-    file = request.files['file_give']
-    ext = image_receive.split('.')[-1] #확장자 추출
-    filename = f"{current_time.strftime('%Y%m%d%H%M%S')}.{ext}"
-    save_to = f'static/img/tutor_profile/{filename}'  # 경로지정
-    file.save(save_to)
-    token_receive = request.cookies.get('mytoken')
+def profile_post():
+    tutorname_receive = request.form['tutorname_give']
+    qualifications_receive = request.form['qualifications_give']
+    career_receive = request.form['career_give']
+    inputstate_receive = request.form['inputstate_give']
 
-    user = db.citista_users.find_one({'token': token_receive})
-    user_id = user['username']
-    content_num = db.citista_contents.find({}, {'_id': False}).collection.estimated_document_count()
-    doc_contents = {
-        'user_id': user_id,
-        'post_id': content_num + 1,
-        'img': image_receive,
-        'f_name': filename,
-        'desc': desc_receive,
-        'timestamp': current_time
+    doc = {
+        'tutorname':tutorname_receive,
+        'qualifications':qualifications_receive,
+        'career':career_receive,
+        'inputstate':inputstate_receive
     }
-    db.citista_contents.insert_one(doc_contents)
-    doc_likes = {
-        'post_id': content_num + 1,
-        'like': 0
-    }
-    db.citista_likes.insert_one(doc_likes)
-    return jsonify({'msg':'프로필 등록 완료!'})
+    db.tutor_porfile.insert_one(doc)
+    return jsonify({'msg':'✅ 등록 완료!'})
+
+
+# @app.route("/profile", methods=["POST"])
+# def profile():
+#     current_time = datetime.datetime.now()
+#     image_receive = request.form['image_give']
+#     desc_receive = request.form['desc_give']
+#     file = request.files['file_give']
+#     ext = image_receive.split('.')[-1] #확장자 추출
+#     filename = f"{current_time.strftime('%Y%m%d%H%M%S')}.{ext}"
+#     save_to = f'static/img/tutor_profile/{filename}'  # 경로지정
+#     file.save(save_to)
+#     token_receive = request.cookies.get('mytoken')
+#
+#     user = db.citista_users.find_one({'token': token_receive})
+#     user_id = user['username']
+#     content_num = db.citista_contents.find({}, {'_id': False}).collection.estimated_document_count()
+#     doc_contents = {
+#         'user_id': user_id,
+#         'post_id': content_num + 1,
+#         'img': image_receive,
+#         'f_name': filename,
+#         'desc': desc_receive,
+#         'timestamp': current_time
+#     }
+#     db.citista_contents.insert_one(doc_contents)
+#     doc_likes = {
+#         'post_id': content_num + 1,
+#         'like': 0
+#     }
+#     db.citista_likes.insert_one(doc_likes)
+#     return jsonify({'msg':'프로필 등록 완료!'})
 
 
 if __name__ == '__main__':

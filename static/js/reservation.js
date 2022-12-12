@@ -12,16 +12,15 @@ function show_profile() {
            let tutor = response['tutor']
            console.log(tutor)
            let img = tutor[0]['img']
-            let id = tutor[0]['id']
+            let name = tutor[0]['name']
 
             temp_html = `  <img  src="${img}"
                          class="img-fluid" alt="tutor_name"><br><br>
-                        <h5> ${id} 강사 시간표</h5>`
+                        <h5> ${name} 강사 시간표</h5>`
 
             $('#reservation-profile').append(temp_html)
         }
     })
-
 }
 
 function show_timetables() {
