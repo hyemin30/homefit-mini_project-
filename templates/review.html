@@ -44,10 +44,40 @@
             height: 300px;
 
             margin: 10px auto 10px auto;
+
+            overflow-y: scroll;
         }
 
         .card_list > div {
             margin-top: 5px;
+        }
+
+        .btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn > button {
+            outline: none;
+            border-radius: 5px;
+
+            margin: 0px 10px 0px 10px;
+
+            height: 30px;
+        }
+
+        .card_list::-webkit-scrollbar {
+            width: 30px;
+        }
+
+        .card_list::-webkit-scrollbar-thumb {
+            background-color: lightgreen;
+        }
+
+        .card_list::-webkit-scrollbar-thumb:active {
+            background-color: darkolivegreen;
         }
     </style>
     <script>
@@ -56,11 +86,11 @@
         });
 
         function del_cookie() {
-            $.removeCookie('tutor_num');   //강사의 이름, 리뷰 받은 뒤 쿠키 삭제
+            $.removeCookie('tutorNum');   //강사의 이름, 리뷰 받은 뒤 쿠키 삭제
         }
 
         function nameset() {
-            let num = $.cookie('tutor_num');
+            let num = $.cookie('tutorNum');
             let name = ''
             $.ajax({
                 type: "POST",
@@ -75,6 +105,7 @@
                         name = rows[i]['name']
                         let career = rows[i]['career']
                         let qualification = rows[i]['qualification']
+                        let id = rows[i]['new_id']
 
                         let temp_html = `<img src="${img}">
                                         <ul class="tutor_inlist">
@@ -87,32 +118,33 @@
                                         `
 
                         $('#tutor_inform').append(temp_html)
+                        review_show(id);
                     }
                 }
             })
-            review_show();
         }
 
-        function review_show() {
-            let num = $.cookie('tutor_num');
+        function review_show(id) {
+            console.log(id)
             $.ajax({
                 type: "POST",
                 url: "/reviewTutor",
-                data: {num_give: num},
+                data: {id_give: id},
                 success: function (response) {
                     let rows = response['review']
                     console.log(rows)
-                    if(rows.length == 0) {
-                        return alert('리뷰가 존재하지 않습니다!')
+                    if (rows.length == 0) {
+                        del_cookie()
+                        return alert('리뷰가 없습니다')
                     }
                     for (let i = 0; i < rows.length; i++) {
-                        let content = rows[i]['content']
+                        let review = rows[i]['review']
                         let member = rows[i]['member']
 
                         let temp_html = `<div class="card">
                                             <div class="card-body">
                                                 <blockquote class="blockquote mb-0">
-                                                    <p>${content}</p>
+                                                    <p>${review}</p>
                                                     <footer class="blockquote-footer">${member}</footer>
                                                 </blockquote>
                                             </div>
@@ -124,6 +156,11 @@
             })
             del_cookie();
         }
+
+        function review_open() {
+            window.open('/reviews')
+            window.close()
+        }
     </script>
 </head>
 
@@ -132,6 +169,10 @@
 <div id="tutor_inform" class="tutor_inform">
 </div>
 <div id="card_list" class="card_list">
+</div>
+<div class="btn">
+    <button style="background-color: lightblue" onclick="review_open()">리뷰 달기</button>
+    <button>닫기</button>
 </div>
 </body>
 

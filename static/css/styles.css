@@ -23,7 +23,8 @@
     background-size: cover;
 }
 
-.main {
+.review-body {
+    background-color: darkseagreen;
 }
 .advise-body {
     background-color: burlywood;
