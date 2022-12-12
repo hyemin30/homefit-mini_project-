@@ -15,7 +15,7 @@ const reset = document.querySelector('.reset');
 const allReset = document.querySelector('.allreset');
 
 
-let currentMon = date.getMonth()+1;   
+let currentMon = date.getMonth() + 1;
 let currentYear = date.getFullYear();
 let currentDay = date.getDate();
 
@@ -29,70 +29,66 @@ let mon = currentMon;
 let clickEventArr = [];
 let storeToDo = [];
 
-function isLeapYear(year){
-    return (year%4==0)&&(year%400==0||year%100!=0);
+function isLeapYear(year) {
+    return (year % 4 == 0) && (year % 400 == 0 || year % 100 != 0);
 }
 
-function getDayOfMon(mon,year){
-    if(mon===1||mon===3||mon===5||mon===7||mon===8||mon===10||mon===12){
+function getDayOfMon(mon, year) {
+    if (mon === 1 || mon === 3 || mon === 5 || mon === 7 || mon === 8 || mon === 10 || mon === 12) {
         return 31;
-    }
-    else if(mon===2){
-        return isLeapYear(year)? 29 : 28;
-    }
-    else{
+    } else if (mon === 2) {
+        return isLeapYear(year) ? 29 : 28;
+    } else {
         return 30;
     }
 }
 
-function getDay(year,mon,date){
-    const conYMD = year+'-'+mon+'-'+date;
-    return(new Date(conYMD).getDay());
+function getDay(year, mon, date) {
+    const conYMD = year + '-' + mon + '-' + date;
+    return (new Date(conYMD).getDay());
 }
-function makeCalendar(year,mon,dayCount){
-    clickEventArr=[];
-    Day.innerHTML='';
-    let getFirstDay = getDay(year,mon,1);
+
+function makeCalendar(year, mon, dayCount) {
+    clickEventArr = [];
+    Day.innerHTML = '';
+    let getFirstDay = getDay(year, mon, 1);
     let previousMon;
-    if(currentMon-1<0){
+    if (currentMon - 1 < 0) {
         previousMon = 12;
-    }
-    else{
+    } else {
         previousMon = currentMon - 1;
     }
-    let getDayOfPreMon = getDayOfMon(previousMon,year);
-    for(let i=(getFirstDay+6)%7; i>0; i--){
+    let getDayOfPreMon = getDayOfMon(previousMon, year);
+    for (let i = (getFirstDay + 6) % 7; i > 0; i--) {
         const listPre = document.createElement('li');
-        listPre.textContent = `${getDayOfPreMon-(i-1)}`;
+        listPre.textContent = `${getDayOfPreMon - (i - 1)}`;
         listPre.style.opacity = '0.5';
         listPre.classList.add('disabled');
         Day.appendChild(listPre);
     }
-   
-    for(let i=1; i<=dayCount; i++){
-        if(i===currentDay&&year===currentYear&&mon===currentMon){
+
+    for (let i = 1; i <= dayCount; i++) {
+        if (i === currentDay && year === currentYear && mon === currentMon) {
             //선택한 년, 월, 일 다를 때 현재 날짜에 검은색 테두리
             const onlyOneList = document.createElement('li');
 
             onlyOneList.textContent = `${i}`;
-            if(currentYear === yearOfChoice && currentMon === MonOfChoice && currentDay === DayOfChoice){
+            if (currentYear === yearOfChoice && currentMon === MonOfChoice && currentDay === DayOfChoice) {
                 onlyOneList.style.border = '3px solid red';
-            }
-            else{
+            } else {
                 onlyOneList.style.border = '3px solid black';
             }
 
-            if(0===getDay(year,mon,i)){
+            if (0 === getDay(year, mon, i)) {
                 onlyOneList.style.color = 'red';
-            }
-            else if(6==getDay(year,mon,i)){
+            } else if (6 == getDay(year, mon, i)) {
                 onlyOneList.style.color = 'blue';
             }
 
             //현재 년, 월 같을 때
-            
-            Day.addEventListener('click',(event)=>{
-                if(event.target!==onlyOneList){
+
+            Day.addEventListener('click', (event) => {
+                if (event.target !== onlyOneList) {
                     onlyOneList.style.border = '3px solid black';
                 }
             });
@@ -103,19 +99,18 @@ function makeCalendar(year,mon,dayCount){
 
         const list = document.createElement('li');
         list.textContent = `${i}`;
-        if(i===DayOfChoice&&year===yearOfChoice&&mon===MonOfChoice){
+        if (i === DayOfChoice && year === yearOfChoice && mon === MonOfChoice) {
             list.style.border = '3px solid red';
-            Day.addEventListener('click',(event)=>{
-                if(event.target!==list){
+            Day.addEventListener('click', (event) => {
+                if (event.target !== list) {
                     list.style.border = 'none';
                 }
             });
-        }    
-
-        if(0===getDay(year,mon,i)){
-            list.style.color = 'red';
         }
-        else if(6==getDay(year,mon,i)){
+
+        if (0 === getDay(year, mon, i)) {
+            list.style.color = 'red';
+        } else if (6 == getDay(year, mon, i)) {
             list.style.color = 'blue';
         }
 
@@ -123,56 +118,54 @@ function makeCalendar(year,mon,dayCount){
     }
 }
 
-function setMonthTitle(year,mon){
+function setMonthTitle(year, mon) {
     month.textContent = `${year}. ${mon}`
 }
 
-function nextMonthOrYear(){
-    if(mon===12){
-        year = year+1;
+function nextMonthOrYear() {
+    if (mon === 12) {
+        year = year + 1;
         mon = 1;
+    } else {
+        mon = mon + 1;
     }
-    else{
-        mon = mon+1;
-    }
-    setMonthTitle(year,mon);
-    makeCalendar(year,mon,getDayOfMon(mon,year));
+    setMonthTitle(year, mon);
+    makeCalendar(year, mon, getDayOfMon(mon, year));
 }
 
-function preMonthOrYear(){
-    if(mon===1){
-        year = year-1;
+function preMonthOrYear() {
+    if (mon === 1) {
+        year = year - 1;
         mon = 12;
+    } else {
+        mon = mon - 1;
     }
-    else{
-        mon = mon-1;
-    }
-    setMonthTitle(year,mon);
-    makeCalendar(year,mon,getDayOfMon(mon,year));
+    setMonthTitle(year, mon);
+    makeCalendar(year, mon, getDayOfMon(mon, year));
 }
 
 
-function main(){
-    setMonthTitle(year,mon);
-    makeCalendar(year,mon,getDayOfMon(mon,year));
+function main() {
+    setMonthTitle(year, mon);
+    makeCalendar(year, mon, getDayOfMon(mon, year));
     todoTitle.textContent = `날짜를 선택하세요`;
     // displayToDoOnDays();
 }
 
-function displayToDoOnDays(){
-    todoList.innerHTML='';
-    const YMD = year+'-'+mon+'-'+DayOfChoice;
+function displayToDoOnDays() {
+    todoList.innerHTML = '';
+    const YMD = year + '-' + mon + '-' + DayOfChoice;
     let arrayToDo;
     const elementToDo = document.createElement('li');
-    if(!localStorage.getItem(YMD)){
+    if (!localStorage.getItem(YMD)) {
         return;
     }
-    if(localStorage.getItem(YMD).includes(',')){
+    if (localStorage.getItem(YMD).includes(',')) {
 
         arrayToDo = localStorage.getItem(YMD).split(',');
-        arrayToDo.forEach((value)=>{
+        arrayToDo.forEach((value) => {
             const deleteBtn = document.createElement('button');
-            deleteBtn.setAttribute('class','deleteBtn');
+            deleteBtn.setAttribute('class', 'deleteBtn');
             deleteBtn.innerHTML = '<i class="far fa-minus-square"></i>';
             const elementToDo = document.createElement('li');
 
@@ -183,10 +176,9 @@ function displayToDoOnDays(){
 
             todoList.appendChild(elementToDo);
         });
-    }
-    else{
+    } else {
         const deleteBtn = document.createElement('button');
-        deleteBtn.setAttribute('class','deleteBtn');
+        deleteBtn.setAttribute('class', 'deleteBtn');
         deleteBtn.innerHTML = '<i class="far fa-minus-square"></i>';
 
         elementToDo.textContent = localStorage.getItem(YMD);
@@ -195,27 +187,27 @@ function displayToDoOnDays(){
     }
 }
 
-pre.addEventListener('click',preMonthOrYear);
-next.addEventListener('click',nextMonthOrYear);
+pre.addEventListener('click', preMonthOrYear);
+next.addEventListener('click', nextMonthOrYear);
 
 
-function clearEvent(){
-    clickEventArr.forEach((value)=>{
+function clearEvent() {
+    clickEventArr.forEach((value) => {
         value.style.border = 'none';
     });
 }
 
-Day.addEventListener('click',(event)=>{
-    if(event.target.tagName==='UL')return;
-    if(event.target.className!=='disabled'){
+Day.addEventListener('click', (event) => {
+    if (event.target.tagName === 'UL') return;
+    if (event.target.className !== 'disabled') {
         clearEvent();
         let day = event.target.textContent
         todoTitle.textContent = `${year}년 ${mon}월 ${event.target.textContent}일`;
-        event.target.style.border='3px solid red';
-        DayOfChoice = (event.target.textContent)*1;
+        event.target.style.border = '3px solid red';
+        DayOfChoice = (event.target.textContent) * 1;
         MonOfChoice = mon;
         yearOfChoice = year;
-        let date = year+'-'+mon+'-'+day
+        let date = year + '-' + mon + '-' + day
         console.log(date)
 
         $.ajax({
@@ -234,18 +226,32 @@ Day.addEventListener('click',(event)=>{
                     let num = rows[i]['num']
                     let temp_html = ``
 
-                    if (response['msg'] == '일반회원') {
-                        temp_html = `<h3> 시간 : ${time} </h3>
+                    if (response['status'] == '미래') {
+                        if (response['msg'] == '일반회원') {
+                            temp_html = `<h3> 시간 : ${time} </h3>
                                 <h3> 강사 : ${tutor} </h3>
                                 <button class="btn btn-cancel" onclick="cancel(${num})"> 예약취소 </button><hr>
                                `;
-                    } else {
-                        temp_html = `<h3> 시간 : ${time} </h3>
+                        } else {
+                            temp_html = `<h3> 시간 : ${time} </h3>
                                 <h3> 회원 : ${member} </h3>
                                 <button class="btn btn-cancel" onclick="cancel(${num})"> 예약취소 </button><hr>
                                `;
+                        }
+                        $('#reservation-text').append(temp_html);
+
+                    } else {
+                        if (response['msg'] == '일반회원') {
+                            temp_html = `<h3> 시간 : ${time} </h3>
+                                <h3> 강사 : ${tutor} </h3> <hr>`;
+                        } else {
+                            temp_html = `<h3> 시간 : ${time} </h3>
+                                <h3> 회원 : ${member} </h3><hr>  `;
+                        }
+                        $('#reservation-text').append(temp_html);
                     }
-                    $('#reservation-text').append(temp_html);
+
+
                 }
 
             }
@@ -260,17 +266,17 @@ Day.addEventListener('click',(event)=>{
 });
 
 
-function addToDoList(){
-    if(input.value === ''){
+function addToDoList() {
+    if (input.value === '') {
         alert('please input you are going to do');
         return;
     }
 
-    const YMD = year+'-'+mon+'-'+DayOfChoice;
-    localStorage.setItem(YMD,storeToDo);
-    
+    const YMD = year + '-' + mon + '-' + DayOfChoice;
+    localStorage.setItem(YMD, storeToDo);
+
     displayToDoOnDays();
-    input.value="";
+    input.value = "";
     input.focus();
 }
 
