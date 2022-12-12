@@ -124,7 +124,7 @@ function makeCalendar(year,mon,dayCount){
 }
 
 function setMonthTitle(year,mon){
-    month.textContent = `${year}.${mon}`
+    month.textContent = `${year}. ${mon}`
 }
 
 function nextMonthOrYear(){
@@ -155,8 +155,8 @@ function preMonthOrYear(){
 function main(){
     setMonthTitle(year,mon);
     makeCalendar(year,mon,getDayOfMon(mon,year));
-    todoTitle.textContent = `${year}.${mon}.${currentDay} 예약내역`;
-    displayToDoOnDays();
+    todoTitle.textContent = `날짜를 선택하세요`;
+    // displayToDoOnDays();
 }
 
 function displayToDoOnDays(){
@@ -168,14 +168,14 @@ function displayToDoOnDays(){
         return;
     }
     if(localStorage.getItem(YMD).includes(',')){
-        
+
         arrayToDo = localStorage.getItem(YMD).split(',');
         arrayToDo.forEach((value)=>{
             const deleteBtn = document.createElement('button');
             deleteBtn.setAttribute('class','deleteBtn');
             deleteBtn.innerHTML = '<i class="far fa-minus-square"></i>';
             const elementToDo = document.createElement('li');
-            
+
             elementToDo.innerText = value;
             elementToDo.appendChild(deleteBtn);
 
@@ -210,20 +210,37 @@ Day.addEventListener('click',(event)=>{
     if(event.target.className!=='disabled'){
         clearEvent();
         let day = event.target.textContent
-        todoTitle.textContent = `${year}.${mon}.${event.target.textContent} 예약내역`;
+        todoTitle.textContent = `${year}년 ${mon}월 ${event.target.textContent}일`;
         event.target.style.border='3px solid red';
         DayOfChoice = (event.target.textContent)*1;
         MonOfChoice = mon;
         yearOfChoice = year;
         let date = year+'-'+mon+'-'+day
-        console.log(year + '-' + mon + '-' + day)
+        console.log(date)
 
         $.ajax({
             type: 'POST',
             url: '/reservation/show',
             data: {'date_give': date},
             success: function (response) {
-                alert(response['msg'])
+                console.log(response['reservations'])
+                $('#reservation-text').empty()
+                let rows = response['reservations']
+                for (let i = 0; i < rows.length; i++) {
+                    let date = rows[i]['date']
+                    let time = rows[i]['time']
+                    let member = rows[i]['member']
+                    let tutor = rows[i]['tutor']
+                    let num = rows[i]['num']
+                    let temp_html = ``
+
+                    temp_html = `<h3> 시간 : ${time} </h3>
+                                <h3> 강사 : ${tutor} </h3>
+                                <button class="btn btn-cancel" onclick="cancel(${num})"> 예약취소 </button><hr>
+                               `
+                    $('#reservation-text').append(temp_html)
+                }
+
             }
         });
 
@@ -235,25 +252,6 @@ Day.addEventListener('click',(event)=>{
 
 });
 
-function keepStore(){
-    const YMD = year+'-'+mon+'-'+DayOfChoice;
-    let arrayToDo;
-    let arr = new Array();
-    const elementToDo = document.createElement('li');
-    if(!localStorage.getItem(YMD)){
-        return arr;
-    }
-    if(localStorage.getItem(YMD).includes(',')){
-        arrayToDo = localStorage.getItem(YMD).split(',');
-        arrayToDo.forEach((value)=>{
-            arr.push(value);
-        });
-    }
-    else{
-        arr.push(localStorage.getItem(YMD));
-    }
-    return arr;
-}
 
 function addToDoList(){
     if(input.value === ''){
@@ -261,9 +259,6 @@ function addToDoList(){
         return;
     }
 
-    storeToDo = keepStore();
-    storeToDo.push(input.value);
-    
     const YMD = year+'-'+mon+'-'+DayOfChoice;
     localStorage.setItem(YMD,storeToDo);
     
@@ -271,57 +266,19 @@ function addToDoList(){
     input.value="";
     input.focus();
 }
-//
-// add.addEventListener('click',(event)=>{
-//     addToDoList();
-// });
-//
-// input.addEventListener('keypress',(event)=>{
-//     if(event.key==='Enter'){
-//        addToDoList();
-//     }
-// });
-//
-// reset.addEventListener('click',()=>{
-//     const result = prompt(`Do you really want to reset TODO on ${year} ${mon} ${DayOfChoice}? Enter (y/n)`);
-//     const YMD = year+'-'+mon+'-'+DayOfChoice;
-//     if(result==='y'){
-//         localStorage.removeItem(YMD);
-//         displayToDoOnDays();
-//     }
-// });
-//
-// allReset.addEventListener('click',()=>{
-//     const result = prompt(`Do you really want to clear all TODO? Enter (y/n) not recomended💥`);
-//     if(result==='y'){
-//         localStorage.clear();
-//         displayToDoOnDays();
-//     }
-// });
 
-todoList.addEventListener('click',(event)=>{
-    if(event.target.className==='far fa-minus-square'){
-        console.log("a: "+event.target.parentNode.parentNode.textContent);
-             
-        const YMD = year+'-'+mon+'-'+DayOfChoice;
-        
-        if(localStorage.getItem(YMD).includes(',')){
-            let array = localStorage.getItem(YMD).split(',');
-            let copyArray = [];
-            array.forEach((value)=>{
-                if(value !== event.target.parentNode.parentNode.textContent){
-                    copyArray.push(value);
-                }
-            });
-            localStorage.setItem(YMD,copyArray);
+
+function cancel(num) {
+    $.ajax({
+        type: 'POST',
+        url: '/reservation/cancel',
+        data: {'num_give': num},
+        success: function (response) {
+            alert(response['msg'])
+            location.reload();
         }
-        else{
-            localStorage.removeItem(YMD);
-        }
-        
-        todoList.removeChild(event.target.parentNode.parentNode);
-    }
-});
+    });
+}
 
 main();
 

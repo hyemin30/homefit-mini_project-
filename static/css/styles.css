@@ -42,10 +42,12 @@
 .nav-right {
     font-size: 1.5rem;
      margin-right: 20px;
+
 }
 
 .homefit {
     font-size: 2.5rem;
+  font-family: 'Ubuntu', sans-serif;
 }
 
 .reservation-picker {
@@ -77,10 +79,14 @@
     width: 100px;
 }
 
-.btn-cancel:hover {
+.btn-cancel:hover, .btn-time:hover {
     background-color: #BA94D1;
     color: white;
 }
+
+.btn-time {
+    color: #BA94D1;
+    border-color: #BA94D1;}
 
 .bg-purple {
     border-color: #DEBACE;

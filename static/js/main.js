@@ -30,7 +30,7 @@ function show_timetables() {
                     for (let i = 0; i < rows.length; i++) {
                         let time = rows[i]['time'];
                         let temp_html = `                  
-                   <button class="btn btn-outline-warning" onclick="reservation_confirm('${time}')">${time}</button>
+                   <button class="btn btn-time" onclick="reservation_confirm('${time}')">${time}</button>
                 `
                         $('#timetables').append(temp_html);
                     }
@@ -101,4 +101,17 @@ function schedule(){
             }
         });
     }
+}
+
+
+
+function download() {
+    $.ajax({
+            type: "GET",
+            url: "/download",
+            data: {},
+            success: function (response) {
+               alert(response)
+            }
+        });
 }
