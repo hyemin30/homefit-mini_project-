@@ -132,8 +132,9 @@
         }
 
         function review(num) {
-            $.cookie('tutor_num', num);   //리뷰창으로 강사의 이름을 넘김
-            window.open('review', 'review', 'width = 500px, height= 600px, top= 300px, left= 600px')
+            $.cookie('tutor_num', num);   //리뷰창으로 강사의 번호를 넘김
+            window.location = "/review"
+            // window.open('review', 'review', 'width = 500px, height= 600px, top= 300px, left= 600px')
         }
 
         function sample() {
