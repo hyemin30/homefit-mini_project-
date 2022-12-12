@@ -1,6 +1,8 @@
 from builtins import sorted
-
+import io
+from PIL import Image
 from flask import Flask, render_template, jsonify, request, make_response
+import gridfs
 from pymongo import MongoClient
 import certifi
 from operator import itemgetter
@@ -73,55 +75,74 @@ def reservation_confirm():
     else:
         return jsonify({'msg': '같은 시간에 다른 예약이 있습니다'})
 
-# 예약조회화면
+# # 예약조회화면
+# @app.route('/reservation/list')
+# def reservation_list():
+#     return render_template('reservation-list.html')
+#
+# # 예약조회화면
+# @app.route('/reservation/show',  methods=["GET"])
+# def show_reservation():
+#     # member_id = request.cookies.get("member_id")
+#     member_id = 'mini'
+#
+#     find_tutor = db.tutors.find_one({'id': member_id})
+#     find_member = db.members.find_one({'id': member_id})
+#
+#     if find_tutor is None:
+#         print('일반회원 = ', find_member)
+#         data = list(db.reservations.find({"member": find_member['id'], 'status':0}, {'_id': False}))
+#         member_reservations = sorted(data, key=itemgetter('date', 'time'))
+#
+#         for reservation in member_reservations:
+#             print(reservation)
+#             date = reservation['date']
+#             time = reservation['time']
+#             datetime_string = date + ' ' + time
+#             datetime_format = "%Y-%m-%d %H:%M"
+#             datetime_result = datetime.strptime(datetime_string, datetime_format)
+#             now = datetime.now()
+#             print(datetime_result)
+#
+#             if datetime_result < now:
+#                 member_reservations.remove(reservation)
+#         return jsonify({'reservations':member_reservations, 'msg':'일반회원'})
+#     else:
+#         data = list(db.reservations.find({"tutor": find_tutor['id'], 'status':0}, {'_id': False}))
+#         tutor_reservations = sorted(data, key=itemgetter('date', 'time'))
+#
+#         for reservation in tutor_reservations:
+#             date = reservation['date']
+#             time = reservation['time']
+#             datetime_string = date + ' ' + time
+#             datetime_format = "%Y-%m-%d %H:%M"
+#             datetime_result = datetime.strptime(datetime_string, datetime_format)
+#             now = datetime.now()
+#             print(datetime_result)
+#
+#             if datetime_result < now:
+#                 tutor_reservations.remove(reservation)
+#
+#         return jsonify({'reservations':tutor_reservations, 'msg':'강사회원'})
+
+
+# 실험실 ######################################################
 @app.route('/reservation/list')
 def reservation_list():
-    return render_template('reservation-list.html')
+    return render_template('reservations.html')
 
-# 예약조회화면
-@app.route('/reservation/show',  methods=["GET"])
+
+@app.route('/reservation/show',  methods=["POST"])
 def show_reservation():
-    # member_id = request.cookies.get("member_id")
+    # todo member_id 쿠키로 가져오기
     member_id = 'mini'
+    date_receive = request.form['date_give']
 
-    find_tutor = db.tutors.find_one({'id': member_id})
-    find_member = db.members.find_one({'id': member_id})
+    member_reservations = list(db.reservations.find({'member':member_id, 'date':date_receive, 'status':0}, {'_id': False}))
+    print(reservation_list)
 
-    if find_tutor is None:
-        print('일반회원 = ', find_member)
-        data = list(db.reservations.find({"member": find_member['id'], 'status':0}, {'_id': False}))
-        member_reservations = sorted(data, key=itemgetter('date', 'time'))
-
-        for reservation in member_reservations:
-            print(reservation)
-            date = reservation['date']
-            time = reservation['time']
-            datetime_string = date + ' ' + time
-            datetime_format = "%Y-%m-%d %H:%M"
-            datetime_result = datetime.strptime(datetime_string, datetime_format)
-            now = datetime.now()
-            print(datetime_result)
-
-            if datetime_result < now:
-                member_reservations.remove(reservation)
-        return jsonify({'reservations':member_reservations, 'msg':'일반회원'})
-    else:
-        data = list(db.reservations.find({"tutor": find_tutor['id'], 'status':0}, {'_id': False}))
-        tutor_reservations = sorted(data, key=itemgetter('date', 'time'))
-
-        for reservation in tutor_reservations:
-            date = reservation['date']
-            time = reservation['time']
-            datetime_string = date + ' ' + time
-            datetime_format = "%Y-%m-%d %H:%M"
-            datetime_result = datetime.strptime(datetime_string, datetime_format)
-            now = datetime.now()
-            print(datetime_result)
-
-            if datetime_result < now:
-                tutor_reservations.remove(reservation)
-
-        return jsonify({'reservations':tutor_reservations, 'msg':'강사회원'})
+    return jsonify({'msg': '조회되나?','reservations':member_reservations})
+#################################################################################
 
 # 예약취소
 @app.route('/reservation/cancel', methods=["POST"])
@@ -186,6 +207,40 @@ def timetables_add():
             return jsonify({'msg': '스케줄 등록 완료'})
         else:
             return jsonify({'msg': '이미 등록하였습니다'})
+
+
+@app.route("/upload", methods=['POST'])
+def upload():
+    tutor = 'minji'
+    img = request.files['image']
+    filename = img.filename
+    ## GridFs를 통해 파일을 분할하여 DB에 저장하게 된다
+    fs = gridfs.GridFS(db)
+    fs.put(img, filename=filename, tutor=tutor)
+
+    ## file find ##
+    data = db.fs.files.find_one({'filename': filename})
+    # data = client.grid_file.fs.files.find_one({'filename': filename})
+    print(data)
+
+    # ## file download ##
+    # my_id = data['_id']
+    # outputdata = fs.get(my_id).read()
+    # output = open('/images/', 'wb')
+    # output.write(outputdata)
+    return jsonify({'msg': '저장에 성공했습니다.'})
+
+@app.route("/download", methods=['GET'])
+def download():
+    fs = gridfs.GridFS(db)
+    tutor = 'minji'
+    data = db.fs.files.find_one({'tutor': tutor})
+    my_id = data['_id']
+    outputdata = fs.get(my_id).read()
+    data_io = io.BytesIO(outputdata)
+    img = Image.open(data_io)
+    print(img)
+    return jsonify({'img': img})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
