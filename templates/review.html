@@ -156,6 +156,11 @@
             })
             del_cookie();
         }
+
+        function review_open() {
+            window.open('/reviews')
+            window.close()
+        }
     </script>
 </head>
 
@@ -166,7 +171,7 @@
 <div id="card_list" class="card_list">
 </div>
 <div class="btn">
-    <button style="background-color: lightblue">리뷰 달기</button>
+    <button style="background-color: lightblue" onclick="review_open()">리뷰 달기</button>
     <button>닫기</button>
 </div>
 </body>
