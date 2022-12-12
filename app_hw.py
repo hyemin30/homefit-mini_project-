@@ -97,6 +97,9 @@ def api_valid():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.members.find_one({'new_id': payload['id']}, {'_id': 0})
 
+        res = make_response(jsonify())
+        res.set_cookie("memberId", payload['id'])
+        print()
         return jsonify({'result': 'success', 'nickname': userinfo['name']})
 
     except jwt.ExpiredSignatureError:
