@@ -1,17 +1,21 @@
-import datetime
 import hashlib
 import jwt
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-
+from datetime import datetime
+import datetime
+from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
 app = Flask(__name__)
 
 from pymongo import MongoClient
 import certifi
 
+
 ca = certifi.where()
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.qcokm6l.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
-db = client.dbsparta
+client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+db = client.homefit
+
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.qcokm6l.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
+# db = client.dbsparta
 
 SECRET_KEY = 'SPARTA'
 
@@ -60,7 +64,7 @@ def login():
 
     pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
 
-    result = db.save_info.find_one({'new_id': new_id_receive, 'new_pw': pw_hash})
+    result = db.members.find_one({'new_id': new_id_receive, 'new_pw': pw_hash})
 
     if result is not None:
         payload = {
@@ -81,7 +85,7 @@ def api_valid():
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userinfo = db.save_info.find_one({'new_id': payload['id']}, {'_id': 0})
+        userinfo = db.members.find_one({'new_id': payload['id']}, {'_id': 0})
 
         return jsonify({'result': 'success', 'nickname': userinfo['name']})
 
@@ -92,7 +96,7 @@ def api_valid():
 
 @app.route('/api/id_check', methods=['GET'])
 def id_check():
-    id_list = list(db.save_info.find({}, {'_id': False}))
+    id_list = list(db.members.find({}, {'_id': False}))
 
     return jsonify({'id_lists': id_list})
 

@@ -8,13 +8,13 @@ import certifi
 from operator import itemgetter
 from datetime import datetime
 ca = certifi.where()
-# client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
-# db = client.homefit
+client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+db = client.homefit
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.xpiwifp.mongodb.net/Cluster0?retryWrites=true&w=majority')
-db = client.dbsparta
+# client = MongoClient('mongodb+srv://test:sparta@cluster0.xpiwifp.mongodb.net/Cluster0?retryWrites=true&w=majority')
+# db = client.dbsparta
 
 @app.route('/main')
 def main():
@@ -215,7 +215,6 @@ def reservation_form():
 def tutors_reservation():
     num_receive = request.form['num_give']
     make_response().delete_cookie('tutorNum')
-<<<<<<< HEAD:app_hm.py
     res = make_response(jsonify({'msg': "예약조회"}))
     res.set_cookie("tutorNum", num_receive)
     return res
@@ -228,11 +227,9 @@ def reservation_profile():
     return jsonify({'msg': '예약조회', 'tutor': tutor})
 
 
-=======
     make_response().set_cookie('tutorNum', num_receive)
     return jsonify({'msg': '예약조회'})
 #
->>>>>>> origin/workspace:app.py
 # 시간표 검색버튼
 @app.route('/reservation', methods=["POST"])
 def reservation():
@@ -277,7 +274,6 @@ def reservation_confirm():
         return jsonify({'msg': '예약 완료'})
     else:
         return jsonify({'msg': '같은 시간에 다른 예약이 있습니다'})
-<<<<<<< HEAD:app_hm.py
 
 # # 예약조회화면
 # @app.route('/reservation/list')
@@ -331,10 +327,8 @@ def reservation_confirm():
 
 
 # 실험실 ######################################################
-=======
 #
 # 예약조회화면
->>>>>>> origin/workspace:app.py
 @app.route('/reservation/list')
 def reservation_list():
     return render_template('reservations.html')
@@ -445,9 +439,5 @@ def timetables_add():
         else:
             return jsonify({'msg': '이미 등록하였습니다'})
 
-<<<<<<< HEAD:app_hm.py
-
-=======
->>>>>>> origin/workspace:app.py
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
