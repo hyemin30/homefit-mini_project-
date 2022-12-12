@@ -14,8 +14,7 @@ import certifi
 
 ca = certifi.where()
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority',
-                     tlsCAFile=ca)
+client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
 db = client.homefit
 
 # client = MongoClient('mongodb+srv://test:sparta@cluster0.qcokm6l.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
@@ -81,7 +80,7 @@ def login():
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'result': 'success', 'token': token, 'member_id':new_id_receive})
+        return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive})
 
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
@@ -105,13 +104,13 @@ def api_valid():
 
 @app.route('/api/id_check', methods=['GET'])
 def id_check():
+    print('함수호출')
     id_list = list(db.members.find({}, {'_id': False}))
-
+    print(id_list)
     return jsonify({'id_lists': id_list})
 
 
 # 유민우
-
 @app.route('/main')
 def main():
     return render_template('main.html')
@@ -223,10 +222,8 @@ def advise_save():
     title_receive = request.form['title_give']
     comment_receive = request.form['comment_give']
     private_receive = int(request.form['private_give'])
-    member_receive = '테스트2'
-    member_id = 'mini'
-
-    # member 이름과 아이디는 현재 접속중인 사람의 것을 넣음
+    member_id = request.cookies.get("memberId")
+    member_receive = db.members.find_one({'new_id': member_id})
 
     if cnt_receive:
         num = int(request.cookies['comment_num'])
@@ -264,14 +261,12 @@ def advise_save():
 @app.route("/advise/show", methods=["GET"])
 def adviseShow():
     advice = list(db.advise.find({}, {'_id': False}))
-
     return jsonify({'advice': advice})
 
 
 @app.route("/advise/show", methods=["POST"])
 def myadviseShow():
-    id_receive = request.form['id_give']
-
+    id_receive = request.cookies.get("memberId")
     advice = list(db.advise.find({'id': id_receive}, {'_id': False}))
 
     return jsonify({'advice': advice})

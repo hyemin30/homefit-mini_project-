@@ -363,6 +363,7 @@
         data: {},
         success: function (response) {
           let rows = response['id_lists']
+          alert(rows)
 
           if (id === ''){
             alert("아이디를 입력하세요.")
@@ -408,15 +409,46 @@
     }
 
     function save_info() {
+      let new_id = $('#new_id').val()
+      if (new_id === ''){
+        alert("아이디를 입력하세요.")
+        return false
+      }
+
       let new_pw = $('#new_pw').val()
+      if (pw_check() === false){
+        alert("비밀번호를 다시 입력하세요.")
+        return false
+      }
 
       let name = $('#name').val()
-      let new_id = $('#new_id').val()
+      if (name === ''){
+        alert("이름을 입력하세요.")
+        return false
+      }
+
       let location = $('#location').val()
+      if (location === ''){
+        alert("지역을 입력하세요.")
+        return false
+      }
       let choice = select
 
       let qualification = $('#qualification').val()
       let career = $('#career').val()
+
+      if (select === 0) {
+        if (qualification === '') {
+          alert("자격증을 입력하세요.")
+          return false
+        }
+
+        if (career === '') {
+          alert("경력을 입력하세요.")
+          return false
+        }
+      }
+
       let img = $('#chooseFile').val()
       let type = $('#inputState option:selected').val()
 
@@ -444,32 +476,32 @@
 <h1 class="join">회원가입</h1>
 <div class="information">
   <div class="form-floating mb-3">
-    <input id="name" type="email" class="form-control" placeholder="name@example.com">
+    <input id="name" type="email" class="form-control" placeholder=" ">
     <label>이름</label>
   </div>
   <div class="form-floating mb-3">
-    <input name="username" id="new_id" type="email" class="form-control" placeholder="name@example.com">
+    <input name="username" id="new_id" type="email" class="form-control" placeholder=" ">
     <label>ID</label>
   </div>
   <div class="form-floating mb-3">
-    <input id="new_pw" type="email" class="form-control" placeholder="name@example.com">
+    <input id="new_pw" type="email" class="form-control" placeholder=" ">
     <label>PW</label>
   </div>
   <div class="form-floating mb-3">
-    <input id="location" type="email" class="form-control" placeholder="name@example.com">
+    <input id="location" type="email" class="form-control" placeholder=" ">
     <label>지역</label>
   </div>
 </div>
 <div class="check">
   <label class="checkbox">
-    <input type="checkbox" name="checking" value="강사" id="tutor_box" onclick="clickCheck(this)">
+    <input type="checkbox" name="checking" value="나머지 빈칸 채워주세요!!" id="tutor_box" onclick="clickCheck(this)">
     <span class="checkbox_icon"></span>
     <span class="checkbox_text"></span>
   </label>
 </div>
 <div class="check2">
   <label class="checkbox">
-    <input type="checkbox" name="checking" value="일반회원" id="member_box" onclick="clickCheck(this)">
+    <input type="checkbox" name="checking" value="완료 버튼을 눌러주세요!!" id="member_box" onclick="clickCheck(this)">
     <span class="checkbox_icon"></span>
     <span class="checkbox_text"></span>
   </label>
@@ -481,11 +513,11 @@
 <div class="tutor_box" style="display: none">
   <div class="tutor_info">
     <div class="form-floating mb-3">
-      <input id="qualification" type="email" class="form-control" placeholder="name@example.com">
+      <input id="qualification" type="email" class="form-control" placeholder=" ">
       <label>자격증</label>
     </div>
     <div class="form-floating mb-3">
-      <input id="career" type="email" class="form-control" placeholder="name@example.com">
+      <input id="career" type="email" class="form-control" placeholder=" ">
       <label>경력</label>
     </div>
   </div>
