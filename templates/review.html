@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <title>리뷰</title>
+    <style>
+        * {
+            border: none;
+            outline: none;
+        }
+
+        .tutor_inform {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tutor_inform > img {
+            width: 200px;
+            height: 250px;
+        }
+
+        .tutor_inlist {
+            height: 100%;
+            margin-left: 10px;
+        }
+
+        .card_list {
+            width: 90%;
+            height: 300px;
+
+            margin: 10px auto 10px auto;
+        }
+
+        .card_list > div {
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            nameset();
+        });
+
+        function del_cookie() {
+            $.removeCookie('tutor_num');   //강사의 이름, 리뷰 받은 뒤 쿠키 삭제
+        }
+
+        function nameset() {
+            let num = $.cookie('tutor_num');
+            let name = ''
+            $.ajax({
+                type: "POST",
+                url: "review/name",
+                data: {num_give: num},
+                success: function (response) {
+                    let rows = response['tutor']
+                    for (let i = 0; i < rows.length; i++) {
+                        let img = rows[i]['img']
+                        let type = rows[i]['type']
+                        let location = rows[i]['location']
+                        name = rows[i]['name']
+                        let career = rows[i]['career']
+                        let qualification = rows[i]['qualification']
+
+                        let temp_html = `<img src="${img}">
+                                        <ul class="tutor_inlist">
+                                            <li class="list-group-item" id="name">이름: ${name}</li>
+                                            <li class="list-group-item">지역: ${location}</li>
+                                            <li class="list-group-item">운동: ${type}</li>
+                                            <li class="list-group-item">경력: ${career}</li>
+                                            <li class="list-group-item">자격증: ${qualification}</li>
+                                        </ul>
+                                        `
+
+                        $('#tutor_inform').append(temp_html)
+                    }
+                }
+            })
+            review_show();
+        }
+
+        function review_show() {
+            let num = $.cookie('tutor_num');
+            $.ajax({
+                type: "POST",
+                url: "/reviewTutor",
+                data: {num_give: num},
+                success: function (response) {
+                    let rows = response['review']
+                    console.log(rows)
+                    if(rows.length == 0) {
+                        return alert('리뷰가 존재하지 않습니다!')
+                    }
+                    for (let i = 0; i < rows.length; i++) {
+                        let content = rows[i]['content']
+                        let member = rows[i]['member']
+
+                        let temp_html = `<div class="card">
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>${content}</p>
+                                                    <footer class="blockquote-footer">${member}</footer>
+                                                </blockquote>
+                                            </div>
+                                        </div>`
+
+                        $('#card_list').append(temp_html)
+                    }
+                }
+            })
+            del_cookie();
+        }
+    </script>
+</head>
+
+<body class="review-body">
+<a class="navbar-brand homefit" style="color: white; cursor: pointer" onclick="window.close()">HomeFit</a>
+<div id="tutor_inform" class="tutor_inform">
+</div>
+<div id="card_list" class="card_list">
+</div>
+</body>
+
+</html>
