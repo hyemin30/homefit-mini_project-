@@ -81,9 +81,7 @@ def login():
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        res = make_response(jsonify())
-        res.set_cookie("memberId", new_id_receive)
-        return jsonify({'result': 'success', 'token': token})
+        return jsonify({'result': 'success', 'token': token, 'member_id':new_id_receive})
 
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
@@ -97,9 +95,6 @@ def api_valid():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         userinfo = db.members.find_one({'new_id': payload['id']}, {'_id': 0})
 
-        res = make_response(jsonify())
-        res.set_cookie("memberId", payload['id'])
-        print()
         return jsonify({'result': 'success', 'nickname': userinfo['name']})
 
     except jwt.ExpiredSignatureError:
@@ -229,7 +224,7 @@ def advise_save():
     comment_receive = request.form['comment_give']
     private_receive = int(request.form['private_give'])
     member_receive = '테스트2'
-    member_id = 'test1234'
+    member_id = 'mini'
 
     # member 이름과 아이디는 현재 접속중인 사람의 것을 넣음
 
@@ -332,7 +327,7 @@ def reservation_form():
 def tutors_reservation():
     num_receive = request.form['num_give']
     make_response().delete_cookie('tutorNum')
-    res = make_response(jsonify({'msg': "예약조회"}))
+    res = make_response()
     res.set_cookie("tutorNum", num_receive)
     return res
 
@@ -463,27 +458,27 @@ def show_reservation():
     find_member = db.members.find_one({'new_id': member})
 
     choice = find_member['choice']
-
     datetime_format = "%Y-%m-%d"
     datetime_result = datetime.datetime.strptime(date_receive, datetime_format)
     now = datetime.datetime.now()
     if datetime_result < now:
-        if choice == "0":
+        if choice == "1":
             data = list(
                 db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
             member_reservations = sorted(data, key=itemgetter('date', 'time'))
-            return jsonify({'msg': '일반회원', 'reservations': member_reservations})
+            print(member_reservations)
+            return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations})
         else:
             data = list(
                 db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
             tutors_reservation = sorted(data, key=itemgetter('date', 'time'))
-            return jsonify({'msg': '강사회원', 'reservations': tutors_reservation})
+            return jsonify({'msg': '강사회원', 'status': '과거', 'reservations': tutors_reservation})
     else:
-        if choice == "0":
+        if choice == "1":
             data = list(
                 db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
             member_reservations = sorted(data, key=itemgetter('date', 'time'))
-            return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations})
+            return jsonify({'msg': '일반회원', 'status': '미래', 'reservations': member_reservations})
         else:
             data = list(
                 db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
@@ -516,9 +511,7 @@ def reservation_cancel():
 # 스케줄 등록화면
 @app.route('/timetables', methods=["GET"])
 def show_timetables():
-    # member_id = request.cookies.get("member_id")
-    member_id = 'minji'
-
+    member_id = request.cookies.get("memberId")
     data = db.members.find_one({'new_id': member_id, 'choice':"0"})
 
     if data is None:
@@ -530,8 +523,7 @@ def show_timetables():
 # 스케줄 등록하기
 @app.route('/timetables', methods=["POST"])
 def timetables_add():
-    # tutor = request.cookies.get("member_id")
-    tutor = 'minji'
+    tutor = request.cookies.get("memberId")
     time_receive = request.form['time_give']
     date_receive = request.form['date_give']
 
@@ -539,8 +531,8 @@ def timetables_add():
 
     datetime_string = date_receive + ' ' + time_receive
     datetime_format = "%Y-%m-%d %H:%M"
-    datetime_result = datetime.strptime(datetime_string, datetime_format)
-    now = datetime.now()
+    datetime_result = datetime.datetime.strptime(datetime_string, datetime_format)
+    now = datetime.datetime.now()
 
     if datetime_result < now:
         return jsonify({'msg': '현재 시간 이후로만 등록 가능합니다'})
