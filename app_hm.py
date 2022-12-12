@@ -116,7 +116,10 @@ def advise_save():
     title_receive = request.form['title_give']
     comment_receive = request.form['comment_give']
     private_receive = int(request.form['private_give'])
-    member_receive = '테스트2'
+    member_receive = request.cookies['memberId']
+
+
+
     member_id = 'test1234'
 
     #member 이름과 아이디는 현재 접속중인 사람의 것을 넣음
