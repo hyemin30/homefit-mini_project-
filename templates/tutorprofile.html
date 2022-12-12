@@ -211,12 +211,10 @@
                 data: {tutorname_give: tutorname, qualifications_give: qualifications, career_give: career, inputstate_give: inputstate},
                 success: function (response) {
                     alert(response['msg'])
-                    window.location.reload()
+                    history.back();
                 }
             });
         }
-
-
 
     </script>
 </head>

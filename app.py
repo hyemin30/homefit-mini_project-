@@ -23,6 +23,17 @@ db = client.homefit
 SECRET_KEY = 'SPARTA'
 
 
+# navbar control
+@app.route('/checkmember')
+def checkmember():
+    member_id = request.cookies.get('memberId')
+    member = db.members.find_one({'new_id': member_id})
+
+    if member['choice'] == "1":
+        return jsonify({'msg': '일반'})
+    else:
+        return jsonify({'msg': '강사'})
+
 # 김현우
 @app.route('/')
 def home():
@@ -589,35 +600,52 @@ def review_profile():
 
 # 여기부터는 강사프로필
 @app.route("/profile", methods=["POST"])
-def profile():
-    current_time = datetime.datetime.now()
-    image_receive = request.form['image_give']
-    desc_receive = request.form['desc_give']
-    file = request.files['file_give']
-    ext = image_receive.split('.')[-1] #확장자 추출
-    filename = f"{current_time.strftime('%Y%m%d%H%M%S')}.{ext}"
-    save_to = f'static/img/tutor_profile/{filename}'  # 경로지정
-    file.save(save_to)
-    token_receive = request.cookies.get('mytoken')
+def profile_post():
+    tutorname_receive = request.form['tutorname_give']
+    qualifications_receive = request.form['qualifications_give']
+    career_receive = request.form['career_give']
+    inputstate_receive = request.form['inputstate_give']
 
-    user = db.citista_users.find_one({'token': token_receive})
-    user_id = user['username']
-    content_num = db.citista_contents.find({}, {'_id': False}).collection.estimated_document_count()
-    doc_contents = {
-        'user_id': user_id,
-        'post_id': content_num + 1,
-        'img': image_receive,
-        'f_name': filename,
-        'desc': desc_receive,
-        'timestamp': current_time
+    doc = {
+        'tutorname':tutorname_receive,
+        'qualifications':qualifications_receive,
+        'career':career_receive,
+        'inputstate':inputstate_receive
     }
-    db.citista_contents.insert_one(doc_contents)
-    doc_likes = {
-        'post_id': content_num + 1,
-        'like': 0
-    }
-    db.citista_likes.insert_one(doc_likes)
-    return jsonify({'msg':'프로필 등록 완료!'})
+    db.tutor_porfile.insert_one(doc)
+    return jsonify({'msg':'✅ 등록 완료!'})
+
+
+# @app.route("/profile", methods=["POST"])
+# def profile():
+#     current_time = datetime.datetime.now()
+#     image_receive = request.form['image_give']
+#     desc_receive = request.form['desc_give']
+#     file = request.files['file_give']
+#     ext = image_receive.split('.')[-1] #확장자 추출
+#     filename = f"{current_time.strftime('%Y%m%d%H%M%S')}.{ext}"
+#     save_to = f'static/img/tutor_profile/{filename}'  # 경로지정
+#     file.save(save_to)
+#     token_receive = request.cookies.get('mytoken')
+#
+#     user = db.citista_users.find_one({'token': token_receive})
+#     user_id = user['username']
+#     content_num = db.citista_contents.find({}, {'_id': False}).collection.estimated_document_count()
+#     doc_contents = {
+#         'user_id': user_id,
+#         'post_id': content_num + 1,
+#         'img': image_receive,
+#         'f_name': filename,
+#         'desc': desc_receive,
+#         'timestamp': current_time
+#     }
+#     db.citista_contents.insert_one(doc_contents)
+#     doc_likes = {
+#         'post_id': content_num + 1,
+#         'like': 0
+#     }
+#     db.citista_likes.insert_one(doc_likes)
+#     return jsonify({'msg':'프로필 등록 완료!'})
 
 
 if __name__ == '__main__':
