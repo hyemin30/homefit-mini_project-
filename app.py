@@ -33,6 +33,7 @@ def save_info():
     qualification_receive = request.form['qualification_give']
     career_receive = request.form['career_give']
     img_receive = request.form['img_give']
+    type_receive = request.form['type_give']
 
     pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
 
@@ -44,7 +45,8 @@ def save_info():
         'choice': choice_receive,
         'qualification': qualification_receive,
         'career': career_receive,
-        'img': img_receive
+        'img': img_receive,
+        'type': type_receive
     }
     db.save_info.insert_one(doc)
 

@@ -144,13 +144,15 @@
 
     .finish {
       position: absolute;
-      left: 50%;
-      top: 140%;
+      left: 96%;
+      top: 5%;
       transform: translate(-50%, -50%);
 
+      background-color: blue;
       border-width: medium;
       border-color: black;
       border-radius: 15px;
+      color: white;
 
       width: 100px;
       height: 60px;
@@ -261,6 +263,25 @@
       height: 300px;
     }
 
+    .col-md-4{
+      position: absolute;
+      left: 50%;
+      top: 137%;
+      transform: translate(-50%, -50%);
+    }
+
+    .trash{
+      background-color: transparent;
+
+      position: absolute;
+      left: 50%;
+      top: 160%;
+      transform: translate(-50%, -50%);
+
+      width: 250px;
+      height: 250px;
+    }
+
   </style>
 
   <script>
@@ -274,6 +295,7 @@
     let select = 0 // 강사인지 일반회원인지 판별
 
     function choice() {
+
       var obj_length = document.getElementsByName("checking").length;
 
       for (var i = 0; i < obj_length; i++) {
@@ -281,6 +303,11 @@
           alert(document.getElementsByName("checking")[i].value);
           select = i
         }
+      }
+      if(select === 0){
+        $('.tutor_box').show()
+      } else {
+        $('.tutor_box').hide()
       }
     }
 
@@ -392,6 +419,7 @@
       let qualification = $('#qualification').val()
       let career = $('#career').val()
       let img = $('#chooseFile').val()
+      let type = $('#inputState option:selected').val()
 
       $.ajax({
         type: 'POST',
@@ -400,7 +428,7 @@
         data: {
           name_give: name, new_id_give: new_id, new_pw_give: new_pw,
           location_give: location, choice_give: choice, qualification_give: qualification,
-          career_give: career, img_give: img
+          career_give: career, img_give: img, type_give: type
         },
         success: function (response) {
           alert(response['msg'])
@@ -451,41 +479,53 @@
 <p class="yes">강사</p>
 <p class="no">일반회원</p>
 <button onclick="choice()" class="btn btn-default" type="submit">확인</button>
-<div class="tutor_info">
-  <div class="form-floating mb-3">
-    <input id="qualification" type="email" class="form-control" placeholder="name@example.com">
-    <label>자격증</label>
-  </div>
-  <div class="form-floating mb-3">
-    <input id="career" type="email" class="form-control" placeholder="name@example.com">
-    <label>경력</label>
-  </div>
-</div>
-<!--이미지 파일 불러오기-->
-<div class="container">
-  <div class="image-upload" id="image-upload">
-
-    <form method="post" enctype="multipart/form-data">
-      <div class="button">
-        <label for="chooseFile">
-          👉 사진 제출! <--클릭 👈
-        </label>
-      </div>
-      <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
-      <img class="prev" id="preview"/>
-    </form>
-
-    <div class="fileContainer">
-      <div class="fileInput">
-        <p>파일명: </p>
-        <p id="fileName"></p>
-      </div>
+<div class="tutor_box" style="display: none">
+  <div class="tutor_info">
+    <div class="form-floating mb-3">
+      <input id="qualification" type="email" class="form-control" placeholder="name@example.com">
+      <label>자격증</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input id="career" type="email" class="form-control" placeholder="name@example.com">
+      <label>경력</label>
     </div>
   </div>
+  <!--이미지 파일 불러오기-->
+  <div class="container">
+    <div class="image-upload" id="image-upload">
 
-  <div class="image-show" id="image-show"></div>
+      <form method="post" enctype="multipart/form-data">
+        <div class="button">
+          <label for="chooseFile">
+            👉 사진 제출! <--클릭 👈
+          </label>
+        </div>
+        <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+        <img class="prev" id="preview"/>
+      </form>
+
+      <div class="fileContainer">
+        <div class="fileInput">
+          <p>파일명: </p>
+          <p id="fileName"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="image-show" id="image-show"></div>
+  </div>
+  <!---------------------->
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">강사종류</label>
+    <select id="inputState" class="form-select" onchange="">
+      <option value="pt">PT 강사</option>
+      <option value="yoga">요가강사</option>
+      <option value="filates">필라테스강사</option>
+      <option value="rhb">재활치료사</option>
+      <option value="etc">기타</option>
+    </select>
+  </div>
 </div>
-<!---------------------->
 <div onclick="save_info()">
   <button class="finish" type="submit">완료</button>
 </div>
@@ -496,5 +536,8 @@
 <button class="pw_check" type="submit" onclick="pw_check()">검사</button>
 <button onclick="window.location.href='/'" class="back" type="submit">뒤로가기</button>
 </div>
+
+<div class="trash"></div>
+
 </body>
 </html>
