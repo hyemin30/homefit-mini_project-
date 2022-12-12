@@ -110,6 +110,7 @@ def reviewTutor():
 
 @app.route("/advise/save", methods=["POST"])
 def advise_save():
+    cnt_receive = int(request.form['cnt_give'])  #cnt는 새로작성이 아닌 수정한 것 update해야됨
     title_receive = request.form['title_give']
     comment_receive = request.form['comment_give']
     private_receive = int(request.form['private_give'])
@@ -118,20 +119,39 @@ def advise_save():
 
     #member 이름과 아이디는 현재 접속중인 사람의 것을 넣음
 
-    num = len(list(db.advise.find({},{'_id':False}))) + 1
+    if cnt_receive:
+        num = int(request.cookies['comment_num'])
+
+        db.advise.update_one({'num': num}, {'$set': {'title': title_receive}})
+        db.advise.update_one({'num': num}, {'$set': {'comment': comment_receive}})
+        db.advise.update_one({'num': num}, {'$set': {'private': private_receive}})
+
+        return jsonify({'msg': '상담이 완료 되었습니다!'})
+
+
+
+    temp = list(db.advise.find({}, {'_id': False}))
+    num = 0
+
+    if len(temp) == 0 :
+        num = 1
+    else :
+        for atemp in temp:
+            if atemp['num'] > num:
+                num = atemp['num']
 
     doc = {
         'title': title_receive,
         'comment': comment_receive,
         'member': member_receive,
         'id': member_id,
-        'num': num,
+        'num': num + 1,
         'private': private_receive
     }
 
     db.advise.insert_one(doc)
 
-    return jsonify({'msg': '성공'})
+    return jsonify({'msg': '상담이 완료 되었습니다!'})
 
 @app.route("/advise/show", methods=["GET"])
 def adviseShow():
@@ -159,15 +179,23 @@ def commentShow():
 def commentFind():
     num_receive = int(request.form['num_give'])
 
-    advice = list(db.advise.find({'num':num_receive},{'_id':False}))
+    advice = list(db.advise.find({'num': num_receive}, {'_id': False}))
 
     return jsonify({'advice': advice})
 
-@app.route("/advice/comment/find", methods=["POST"])
-def commentFind():
+@app.route("/advise/advice/delete", methods=["POST"])
+def adviceDelete():
     num_receive = int(request.form['num_give'])
 
-    advice = list(db.advise.find({'num':num_receive},{'_id':False}))
+    db.advise.delete_one({'num': num_receive})
+
+    return jsonify({'msg': '삭제 성공!'})
+
+@app.route("/advice/modify", methods=["POST"])
+def adviceModify():
+    num_receive = int(request.form['num_give'])
+
+    advice = list(db.advise.find({'num': num_receive},{'_id':False}))
 
     return jsonify({'advice': advice})
 

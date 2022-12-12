@@ -55,11 +55,18 @@
             $.ajax({
                 type: "POST",
                 url: "advice/delete",
-                data: {num_receive: num},
+                data: {num_give: num},
                 success: function (response) {
-                    console.log(response)
+                    alert(response['msg'])
+                    $.removeCookie('comment_num')
+                    window.close()
                 }
             })
+        }
+
+        function advice_modify() {
+            $.cookie('comment_ck', 1)
+            window.open('write', 'write', 'width = 600px, height= 550px, top= 300px, left= 600px')
         }
     </script>
 </head>
@@ -77,7 +84,7 @@
     </div>
 </div>
 <div class="advice-btn">
-    <button style="background-color: #BA94D1" onclick="" id="modify">수정</button>
+    <button style="background-color: #BA94D1" onclick="advice_modify()" id="modify">수정</button>
     <button style="background-color: brown" onclick="advice_delete()" id="delete">삭제</button>
     <button style="background-color: gray" onclick="advice_close()">닫기</button>
 </div>
