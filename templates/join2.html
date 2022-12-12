@@ -45,7 +45,6 @@
         }
 
 
-
         .id_check {
 
             width: 110px;
@@ -283,7 +282,8 @@
                 }
             }
 
-            let img = $('#chooseFile').val()
+            // let img = $('#chooseFile').val()
+            let img = $('#img').val()
             let type = $('#inputState option:selected').val()
 
             $.ajax({
@@ -297,8 +297,7 @@
                 },
                 success: function (response) {
                     alert(response['msg'])
-                    window.location.reload()
-                    window.location.href = '/'
+                    window.location.href = '/main'
                 }
             })
         }

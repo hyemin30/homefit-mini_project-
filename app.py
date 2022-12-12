@@ -14,7 +14,8 @@ import certifi
 
 ca = certifi.where()
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority',tlsCAFile=ca)
+client = MongoClient('mongodb+srv://test:sparta@cluster0.jftxkcu.mongodb.net/?retryWrites=true&w=majority',
+                     tlsCAFile=ca)
 db = client.homefit
 
 # client = MongoClient('mongodb+srv://test:sparta@cluster0.qcokm6l.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
@@ -28,11 +29,12 @@ SECRET_KEY = 'SPARTA'
 def checkmember():
     member_id = request.cookies.get('memberId')
     member = db.members.find_one({'new_id': member_id})
-
+    print(member)
     if member['choice'] == "1":
         return jsonify({'msg': '일반'})
     else:
         return jsonify({'msg': '강사'})
+
 
 @app.route('/getcookie')
 def getcookie():
@@ -45,10 +47,18 @@ def getcookie():
 def home():
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    res = make_response()
+    res.delete_cookie('tutorNum')
+    res.delete_cookie('user')
+    res.delete_cookie('memberId')
+
+    return res
 
 @app.route('/join')
 def join():
-    return render_template('join.html')
+    return render_template('join2.html')
 
 
 @app.route("/api/save", methods=["POST"])
@@ -67,7 +77,6 @@ def save_info():
 
     num = len(list(db.members.find({}, {'_id': False})))
 
-
     doc = {
         'name': name_receive,
         'new_id': new_id_receive,
@@ -78,7 +87,7 @@ def save_info():
         'career': career_receive,
         'img': img_receive,
         'type': type_receive,
-        'num': num+1
+        'num': num + 1
     }
     db.members.insert_one(doc)
 
@@ -101,7 +110,13 @@ def login():
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive})
+        if result['choice'] == "1":
+            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': '일반'})
+        else:
+            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': '강사'})
+
+
+
 
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
@@ -156,6 +171,7 @@ def advise_read():
 def review():
     return render_template('review.html')
 
+
 @app.route('/reviews')
 def reviews():
     return render_template('reviews.html')
@@ -182,6 +198,7 @@ def tutor_name():
     tutor = list(db.members.find({'num': num_receive}, {'_id': False}))
 
     return jsonify({'tutor': tutor})
+
 
 @app.route("/reviewTutor", methods=["POST"])
 def reviewTutor():
@@ -244,7 +261,7 @@ def commentShow():
     advice = list(db.advise.find({'num': num_receive}, {'_id': False}))
     id_receive = request.cookies.get("memberId")
 
-    return jsonify({'advice': advice, 'cookie':id_receive})
+    return jsonify({'advice': advice, 'cookie': id_receive})
 
 
 @app.route("/advise/comment/find", methods=["POST"])
@@ -278,11 +295,12 @@ def adviceModify():
 
     return jsonify({'msg': '상담이 완료 되었습니다!'})
 
+
 @app.route("/advise/modify", methods=["POST"])
 def adviseModify():
     num_receive = int(request.form['num_give'])
 
-    advice = list(db.advise.find({'num': num_receive},{'_id':False}))
+    advice = list(db.advise.find({'num': num_receive}, {'_id': False}))
 
     return jsonify({'advice': advice})
 
@@ -295,7 +313,6 @@ def reservation_form():
     return render_template('reservation.html')
 
 
-#
 # # 예약화면으로 이동
 @app.route('/tutors/reservation', methods=['POST'])
 def tutors_reservation():
@@ -310,7 +327,7 @@ def tutors_reservation():
 @app.route('/tutors/reservation/profile', methods=['GET'])
 def reservation_profile():
     tutor_num = request.cookies.get("tutorNum")
-    tutor = list(db.members.find({'num': int(tutor_num),'choice':"0"}, {'_id': False}))
+    tutor = list(db.members.find({'num': int(tutor_num), 'choice': "0"}, {'_id': False}))
     return jsonify({'msg': '예약조회', 'tutor': tutor})
 
 
@@ -322,8 +339,8 @@ def reservation():
     num = request.cookies.get("tutorNum")
     print(num)
     print(type(num))
-    tutor = db.members.find_one({'num': int(num),'choice':"0"})
-    print('찾을거야',  tutor)
+    tutor = db.members.find_one({'num': int(num), 'choice': "0"})
+    print('찾을거야', tutor)
     data = list(db.timetables.find({'tutor': tutor['new_id'], 'date': date_receive}, {'_id': False}))
     timetables = sorted(data, key=itemgetter('time'))
     return jsonify({'timetables': timetables})
@@ -336,7 +353,7 @@ def reservation_confirm():
     date_receive = request.form['date_give']
     tutor_num = request.cookies.get("tutorNum")
     member = request.cookies.get("memberId")
-    tutor = db.members.find_one({'num': int(tutor_num),'choice':"0"})['new_id']
+    tutor = db.members.find_one({'num': int(tutor_num), 'choice': "0"})['new_id']
     # member = "mini"
 
     data = db.reservations.find_one({'member': member, 'date': date_receive, 'time': time_receive, 'statud': 0})
@@ -426,7 +443,6 @@ def show_reservation():
     date_receive = request.form['date_give']
 
     find_member = db.members.find_one({'new_id': member})
-    print(member, find_member)
     choice = find_member['choice']
     datetime_format = "%Y-%m-%d"
     datetime_result = datetime.datetime.strptime(date_receive, datetime_format)
@@ -434,24 +450,28 @@ def show_reservation():
     if datetime_result < now:
         if choice == "1":
             data = list(
-                db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
+                db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0},
+                                     {'_id': False}))
             member_reservations = sorted(data, key=itemgetter('date', 'time'))
             return jsonify({'msg': '일반회원', 'status': '과거', 'reservations': member_reservations})
         else:
             data = list(
-                db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
+                db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0},
+                                     {'_id': False}))
             tutors_reservation = sorted(data, key=itemgetter('date', 'time'))
 
             return jsonify({'msg': '강사회원', 'status': '과거', 'reservations': tutors_reservation})
     else:
         if choice == "1":
             data = list(
-                db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
+                db.reservations.find({"member": find_member['new_id'], 'date': date_receive, 'status': 0},
+                                     {'_id': False}))
             member_reservations = sorted(data, key=itemgetter('date', 'time'))
             return jsonify({'msg': '일반회원', 'status': '미래', 'reservations': member_reservations})
         else:
             data = list(
-                db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0}, {'_id': False}))
+                db.reservations.find({"tutor": find_member['new_id'], 'date': date_receive, 'status': 0},
+                                     {'_id': False}))
             tutors_reservation = sorted(data, key=itemgetter('date', 'time'))
             return jsonify({'msg': '강사회원', 'status': '미래', 'reservations': tutors_reservation})
 
@@ -482,7 +502,7 @@ def reservation_cancel():
 @app.route('/timetables', methods=["GET"])
 def show_timetables():
     member_id = request.cookies.get("memberId")
-    data = db.members.find_one({'new_id': member_id, 'choice':"0"})
+    data = db.members.find_one({'new_id': member_id, 'choice': "0"})
 
     if data is None:
         return jsonify({'msg': '일반회원은 이용할 수 없습니다'})
@@ -524,7 +544,7 @@ def timetables_add():
 @app.route("/review", methods=["POST"])
 def review_post():
     review_receive = request.form['review_give']
-    review_list = list(db.review.find({},{'_id':False}))
+    review_list = list(db.review.find({}, {'_id': False}))
     count = len(review_list) + 1
 
     member = request.cookies.get('memberId')
@@ -533,10 +553,10 @@ def review_post():
 
     doc = {
         'member': member,
-        'tutor' : tutor,
-        'num':count,
-        'review':review_receive,
-        'done':0
+        'tutor': tutor,
+        'num': count,
+        'review': review_receive,
+        'done': 0
     }
     db.review.insert_one(doc)
 
@@ -546,37 +566,39 @@ def review_post():
 @app.route("/review/done", methods=["POST"])
 def review_done():
     num_receive = request.form['num_give']
-    db.review.update_one({'num':int(num_receive)},{'$set':{'done':1}})
+    db.review.update_one({'num': int(num_receive)}, {'$set': {'done': 1}})
     return jsonify({'msg': '✏️ 등록완료'})
 
 
 @app.route("/review/cancel", methods=["POST"])
 def cancel_review():
     num_receive = request.form['num_give']
-    db.review.delete_one({'num':int(num_receive)})
+    db.review.delete_one({'num': int(num_receive)})
     return jsonify({'msg': '☠️ 삭제완료'})
+
 
 @app.route("/myreviews", methods=["GET"])
 def review_get():
     tutor_num = request.cookies.get("tutorNum")
     member = request.cookies.get("memberId")
-    tutor = db.members.find_one({'num': int(tutor_num), 'choice':"0"})['new_id']
-    review_list = list(db.review.find({'tutor':tutor, 'member':member},{'_id':False}))
+    tutor = db.members.find_one({'num': int(tutor_num), 'choice': "0"})['new_id']
+    review_list = list(db.review.find({'tutor': tutor, 'member': member}, {'_id': False}))
     return jsonify({'reviews': review_list})
+
 
 @app.route("/reviews/profile", methods=["GET"])
 def review_profile():
     tutor_num = request.cookies.get("tutorNum")
 
-    tutor = list(db.members.find({'num':int(tutor_num)},{'_id':False}))
+    tutor = list(db.members.find({'num': int(tutor_num)}, {'_id': False}))
     return jsonify({'tutor': tutor})
-
 
 
 # 여기부터는 강사프로필
 @app.route('/profile')
 def profile():
     return render_template('tutorprofile.html')
+
 
 # @app.route("/profile", methods=["POST"])
 # def profile_post():
@@ -610,7 +632,7 @@ def profile_post():
         'type': inputstate_receive
     }})
 
-    return jsonify({'msg':'✅ 등록 완료!'})
+    return jsonify({'msg': '✅ 등록 완료!'})
 
 
 # @app.route("/profile", methods=["POST"])

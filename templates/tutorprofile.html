@@ -216,7 +216,7 @@
             let qualifications = $('#qualifications').val()
             let career = $('#career').val()
             let inputstate = $('#inputState').val()
-            console.log(tutorname,qualifications,career,inputstate)
+            console.log(tutorname, qualifications, career, inputstate)
 
             $.ajax({
                 type: 'POST',
@@ -225,7 +225,7 @@
                     'tutorname_give': tutorname,
                     'qualifications_give': qualifications,
                     'career_give': career,
-                   'inputstate_give': inputstate
+                    'inputstate_give': inputstate
                 },
                 success: function (response) {
                     alert(response['msg'])
@@ -250,18 +250,18 @@
 
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link  nav-right" onclick="timetables()">수업등록</a>
-
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  nav-right" href="advise">상담하기</a>
+                    <a class="nav-link  nav-right" onclick="timetables()">수업등록</a>
+
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-right" href="">로그아웃</a>
+                    <a class="nav-link  nav-right" href="/profile">프로필수정</a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-right" href="/logout">로그아웃</a>
                 </li>
             </ul>
         </div>
