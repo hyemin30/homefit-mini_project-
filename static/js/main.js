@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    // check_member()
     show_navbar()
 });
 
@@ -105,7 +104,7 @@ function show_navbar() {
                                 <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  nav-right" href="advise">상담하기</a>
+                                <a class="nav-link  nav-right" href="/advise">상담하기</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-right" onclick="logout()">로그아웃</a>

@@ -597,7 +597,13 @@ def review_profile():
 # 여기부터는 강사프로필
 @app.route('/profile')
 def profile():
-    return render_template('tutorprofile.html')
+    return render_template('tutorprofile2.html')
+
+@app.route('/profile/show')
+def my_profile():
+    member_id = request.cookies.get("memberId")
+    member = list(db.members.find({'new_id': member_id}, {'_id': False}))
+    return jsonify({'member':member})
 
 
 # @app.route("/profile", methods=["POST"])
@@ -622,10 +628,10 @@ def profile_post():
     qualifications_receive = request.form['qualifications_give']
     career_receive = request.form['career_give']
     inputstate_receive = request.form['inputstate_give']
-    num = request.cookies.get('tutorNum')
+    member_id = request.cookies.get("memberId")
 
     print(inputstate_receive)
-    db.members.update_one({'num': int(num)}, {'$set': {
+    db.members.update_one({'new_id': member_id}, {'$set': {
         'name': tutorname_receive,
         'qualification': qualifications_receive,
         'career': career_receive,
