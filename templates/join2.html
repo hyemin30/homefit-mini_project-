@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <title>회원가입</title>
+
+    <style>
+        .join {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .information {
+            background-color: pink;
+            margin: 40px auto 0px;
+
+            /*transform: translate(-50%, -50%);*/
+
+            width: 500px;
+
+            background-color: pink;
+            padding: 30px;
+                box-shadow: 0px 0px 10px 0px lightgray;
+
+        }
+
+        .yn {
+            /*position: absolute;*/
+            /*left: 43%;*/
+            /*top: 54%;*/
+            /*transform: translate(-50%, -50%);*/
+        }
+
+        .yes {
+            position: absolute;
+            left: 40%;
+            top: 75%;
+            transform: translate(-50%, -50%);
+        }
+
+        .no {
+            position: absolute;
+            left: 50%;
+            top: 75%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-default {
+            /*position: absolute;*/
+            /*left: 55%;*/
+            /*top: 57%;*/
+            /*transform: translate(-50%, -50%);*/
+
+        }
+
+        .tutor_info {
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*top: 68%;*/
+            /*transform: translate(-50%, -50%);*/
+
+            width: 500px;
+            height: 100px;
+        }
+
+        .finish {
+            /*position: absolute;*/
+            /*left: 96%;*/
+            /*top: 5%;*/
+            /*transform: translate(-50%, -50%);*/
+
+            background-color: blue;
+            border-width: medium;
+            border-color: black;
+            border-radius: 15px;
+            color: white;
+
+            width: 100px;
+            height: 60px;
+        }
+
+        .id_check {
+
+            width: 110px;
+            height: 55px;
+        }
+
+        .pw_check {
+
+            width: 110px;
+            height: 55px;
+        }
+
+        .back {
+            /*position: absolute;*/
+            /*left: 3%;*/
+            /*top: 4.5%;*/
+            /*transform: translate(-50%, -50%);*/
+
+            width: 80px;
+            height: 55px;
+        }
+
+        .container {
+            background-color: pink;
+
+            width: 900px;
+
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*top: 85%;*/
+            /*transform: translate(-50%, -50%);*/
+
+            /*display: flex;*/
+            /*flex-direction: column;*/
+        }
+
+        .image-upload {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+        }
+
+        label {
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        #chooseFile {
+            visibility: hidden;
+        }
+
+        .fileContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fileInput {
+            display: flex;
+            align-items: center;
+            border-bottom: solid 2px black;
+            width: 60%;
+            height: 30px;
+        }
+
+        #fileName {
+            margin-left: 5px;
+        }
+
+        .image-show {
+            z-index: -1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /*position: absolute;*/
+            width: 100%;
+            height: 100%;
+        }
+
+        .prev {
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*top: 200%;*/
+            /*transform: translate(-50%, -50%);*/
+
+            width: 300px;
+            height: 300px;
+        }
+
+        .col-md-4 {
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*top: 137%;*/
+            /*transform: translate(-50%, -50%);*/
+        }
+
+        .trash {
+            background-color: transparent;
+
+            /*position: absolute;*/
+            /*left: 50%;*/
+            /*top: 160%;*/
+            /*transform: translate(-50%, -50%);*/
+
+            width: 250px;
+            height: 250px;
+        }
+
+        .horizon {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ok {
+            margin-left: 30px;
+        }
+
+        .checkdiv {
+            text-align: center;
+            width: 100px;
+
+        }
+
+        .please-check {
+            width: 100px;
+        }
+
+        .checkbox {
+            margin-top: 30px;
+        }
+
+        .join-btn {
+            text-align: center;
+        }
+
+        .join-btn > button {
+            margin-left: 15px;
+        }
+
+        .tutorbox-btn {
+            margin-top: 30px;
+        }
+        .tutor_box {
+            margin-top: 30px;
+        }
+
+    </style>
+
+    <script>
+        function clickCheck(target) {
+            document.querySelectorAll(`input[type=checkbox]`)
+                .forEach(el => el.checked = false);
+
+            target.checked = true;
+        }
+
+        let select = 0 // 강사인지 일반회원인지 판별
+
+        function choice() {
+
+            var obj_length = document.getElementsByName("checkbox").length;
+
+            for (var i = 0; i < obj_length; i++) {
+                if (document.getElementsByName("checkbox")[i].checked == true) {
+                    // alert(document.getElementsByName("checkbox")[i].value);
+                    select = i
+                }
+            }
+            if (select === 0) {
+                $('#join-btn').empty()
+                $('.tutor_box').show()
+            } else {
+                $('#join-btn').empty()
+                let temp_html = `
+                        <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
+                        <button class="btn btn-primary" type="submit" onclick="save_info()">완료</button>`
+                $('#join-btn').append(temp_html)
+
+                $('.tutor_box').hide()
+            }
+        }
+
+        function loadFile(input) {
+            var file = input.files[0];
+
+            var name = document.getElementById('fileName');
+            name.textContent = file.name;
+
+            var newImage = document.createElement("img");
+            newImage.setAttribute("class", 'img');
+
+            newImage.src = URL.createObjectURL(file);
+
+            newImage.style.width = "70%";
+            newImage.style.height = "70%";
+            newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지 숨기기
+            newImage.style.objectFit = "contain";
+
+            var container = document.getElementById('image-show');
+            container.appendChild(newImage);
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                document.getElementById('preview').src = "";
+            }
+        };
+
+        function overlap() {
+            let id = $('#new_id').val()
+            let idck = 0;
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/id_check',
+                data: {},
+                success: function (response) {
+                    let rows = response['id_lists']
+
+                    if (id === '') {
+                        alert("아이디를 입력하세요.")
+                        return false
+                    }
+
+                    for (let i = 0; i < rows.length; i++) {
+                        if (rows[i]['new_id'] === id) {
+                            idck = 1
+                            break
+                        } else {
+                            idck = 0
+                        }
+                    }
+                    if (idck === 1) {
+                        alert("중복된 아이디 입니다.")
+                    } else {
+                        alert("사용 가능한 아이디 입니다.")
+                    }
+                }
+            })
+        }
+
+        //--------------------------------------------------------
+        function pw_check() {
+            var pw = $("#new_pw").val();
+            var num = pw.search(/[0-9]/g);
+            var eng = pw.search(/[a-z]/ig);
+            var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+            if (pw.length < 8 || pw.length > 20) {
+                alert("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요.");
+                return false;
+            } else if (pw.search(/\s/) != -1) {
+                alert("비밀번호는 공백 없이 입력해주세요.");
+                return false;
+            } else if (num < 0 || eng < 0 || spe < 0) {
+                alert("비밀번호는 영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+                return false;
+            } else if ($('#new_pw').val() !== $('#double_pw').val()) {
+                alert("비밀번호가 일치하지 않습니다.")
+                return false
+            } else {
+                alert("통과");
+                return true;
+            }
+        }
+
+        //-------------------------------------------------------
+        function save_info() { //혜민님 이 함수 부분만 보시면 될 것 같아요
+            let new_id = $('#new_id').val()
+            if (new_id === '') {
+                alert("아이디를 입력하세요.")
+                return false
+            }
+
+            let new_pw = $('#new_pw').val()
+            if (pw_check() === false) {
+                alert("비밀번호를 다시 입력하세요.")
+                return false
+            }
+
+            let name = $('#name').val()
+            if (name === '') {
+                alert("이름을 입력하세요.")
+                return false
+            }
+
+            let location = $('#location').val()
+            if (location === '') {
+                alert("지역을 입력하세요.")
+                return false
+            }
+            let choice = select
+
+            let qualification = $('#qualification').val()
+            let career = $('#career').val()
+
+            if (select === 0) {
+                if (qualification === '') {
+                    alert("자격증을 입력하세요.")
+                    return false
+                }
+
+                if (career === '') {
+                    alert("경력을 입력하세요.")
+                    return false
+                }
+            }
+
+            let img = $('#chooseFile').val()
+            let type = $('#inputState option:selected').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/save',
+                enctype: 'multipart/form-data',
+                data: {
+                    name_give: name, new_id_give: new_id, new_pw_give: new_pw,
+                    location_give: location, choice_give: choice, qualification_give: qualification,
+                    career_give: career, img_give: img, type_give: type
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                    window.location.href = '/'
+                }
+            })
+        }
+
+        function checkOnlyOne(element) {
+
+            const checkboxes
+                = document.getElementsByName("checkbox");
+
+            checkboxes.forEach((cb) => {
+                cb.checked = false;
+            })
+
+            element.checked = true;
+        }
+
+    </script>
+
+</head>
+<body>
+<h1 class="join">회원가입</h1>
+<div class="information">
+    <div class="form-floating mb-3">
+        <input id="name" type="email" class="form-control" placeholder=" ">
+        <label>이름</label>
+    </div>
+    <div class="form-floating horizon mb-3">
+        <input name="username" id="new_id" type="email" class="form-control" placeholder=" ">
+        <label>ID</label>
+        <button class="id_check btn btn-outline-dark" type="submit" onclick="overlap()">중복확인</button>
+    </div>
+    <div class="form-floating horizon mb-3">
+        <input id="new_pw" type="password" class="form-control" placeholder=" ">
+        <label>PW</label>
+
+        <button class="pw_check btn btn-outline-dark" type="submit" onclick="pw_check()">검사</button>
+    </div>
+    <div class="form-floating mb-3">
+        <input id="double_pw" type="password" class="form-control" placeholder=" ">
+        <label>PW 확인</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input id="location" type="email" class="form-control" placeholder=" ">
+        <label>지역</label>
+    </div>
+    <div class="form-floating horizon checkbox mb-3">
+        <span class="please-check">체크해주세요</span>
+
+        <div class="checkdiv">
+            <input type='checkbox' class="form-check-input"
+                   name='checkbox'
+                   value='tutor'
+                   onclick='checkOnlyOne(this)'/>
+            <span>강사</span>
+        </div>
+
+        <div class="checkdiv">
+            <input type='checkbox' class="form-check-input"
+                   name='checkbox'
+                   value='member'
+                   onclick='checkOnlyOne(this)'/>
+            <span>일반회원</span>
+        </div>
+        <button onclick="choice()" class="btn btn-outline-dark ok" type="submit">확인</button>
+    </div>
+
+    <div class="join-btn" id="join-btn">
+        <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
+        <button class="btn btn-primary" type="submit" onclick="save_info()">완료</button>
+    </div>
+
+    <div class="tutor_box">
+        <div class="form-floating mb-3">
+            <input id="img" type="email" class="form-control" placeholder=" ">
+            <label>프로필 이미지URL</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input id="qualification" type="email" class="form-control" placeholder=" ">
+            <label>자격증</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input id="career" type="email" class="form-control" placeholder=" ">
+            <label>경력</label>
+        </div>
+        <div class="col-md-4">
+            <p>강사종류</p>
+            <select id="inputState" class="form-select" onchange="">
+                <option value="pt">피트니스 강사</option>
+                <option value="yoga">요가 강사</option>
+                <option value="filates">필라테스 강사</option>
+                <option value="rhb">재활치료사</option>
+                <option value="etc">기타</option>
+            </select>
+        </div>
+        <div class="join-btn tutorbox-btn">
+            <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
+            <button class="btn btn-primary" type="submit" onclick="save_info()">완료</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

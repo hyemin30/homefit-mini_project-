@@ -203,7 +203,7 @@ def advise_save():
     num = 0
 
     if len(temp) == 0:
-        num = 1
+        num = 0
     else:
         for atemp in temp:
             if atemp['num'] > num:

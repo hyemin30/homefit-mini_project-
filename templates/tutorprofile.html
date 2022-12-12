@@ -20,15 +20,10 @@
             font-family: 'Gowun Dodum', sans-serif;
         }
 
-        body {
-
-            /*backdrop-filter: blur(5px) brightness(200%);*/
-
-            height: 100%;
-            width: 100%;
+        .jbMenu {
             background-color: #1D1E23;
-            color: white;
-
+            width: 100%;
+            position: fixed;
         }
 
 
@@ -43,7 +38,7 @@
         .mypic_tp {
             width: 100%;
             height: 100%;
-            min-height: 200px;
+            min-height: 300px;
 
             background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2014/04/24/17/56/fitness-studio-331569_1280.jpg');
             background-position: 0px -380px;
@@ -64,7 +59,6 @@
         }
 
 
-
         .click {
             margin-top: 20px;
             display: flex;
@@ -74,7 +68,8 @@
             margin: 10px;
 
         }
-        button + button{
+
+        button + button {
             margin-left: 10px;
         }
 
@@ -88,8 +83,9 @@
             align-items: stretch;
             justify-content: center;
         }
+
         .info_box {
-            height: 800px;
+            height: 550px;
             width: 400px;
 
             display: flex;
@@ -98,24 +94,27 @@
             align-content: center;
 
         }
+
         .a_col-md-12 {
             display: flex;
             flex-direction: row;
 
         }
-        .form_es_type{
+
+        .form_es_type {
             margin-right: 37px;
 
 
         }
-        .form-select{
+
+        .form-select {
             width: 300px;
 
         }
 
 
         .uploadImg {
-            height: 800px;
+            height: 550px;
             width: 400px;
 
             display: flex;
@@ -140,10 +139,11 @@
 
 
         }
-        .img_text{
+
+        .img_text {
             position: relative;
-				top: -250px;
-                rightt: 20px
+            top: -250px;
+            rightt: 20px
         }
 
         .filebox {
@@ -199,16 +199,33 @@
 
     </style>
     <script>
-         function save_btn() {
-            let tutorname =$('#tutorname').val()
-            let qualifications =$('#qualifications').val()
-            let career =$('#career').val()
-            let inputstate =$('#inputstate').val()
+
+        $(document).ready(function () {
+            var jbOffset = $('.jbMenu').offset();
+            $(window).scroll(function () {
+                if ($(document).scrollTop() > jbOffset.top) {
+                    $('.jbMenu').addClass('jbFixed');
+                } else {
+                    $('.jbMenu').removeClass('jbFixed');
+                }
+            });
+        });
+
+        function save_btn() {
+            let tutorname = $('#tutorname').val()
+            let qualifications = $('#qualifications').val()
+            let career = $('#career').val()
+            let inputstate = $('#inputstate').val()
 
             $.ajax({
                 type: 'POST',
                 url: '/profile_save',
-                data: {tutorname_give: tutorname, qualifications_give: qualifications, career_give: career, inputstate_give: inputstate},
+                data: {
+                    tutorname_give: tutorname,
+                    qualifications_give: qualifications,
+                    career_give: career,
+                    inputstate_give: inputstate
+                },
                 success: function (response) {
                     alert(response['msg'])
                     history.back();
@@ -216,9 +233,39 @@
             });
         }
 
+
     </script>
 </head>
 <body>
+<div class="jbMenu">
+    <nav class="navbar navbar-expand-lg navbar-dark  top-menu">
+        <a class="navbar-brand homefit" href="/main">HomeFit</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link  nav-right" onclick="timetables()">수업등록</a>
+
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  nav-right" href="advise">상담하기</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-right" href="">로그아웃</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 <div class="mypic_tp">
     <table class="line_bar">
         <tr>
@@ -250,7 +297,7 @@
 
             </div>
             <div class="a_col-md-12">
-                <label for="inputState" class="form_es_type" >운동종류</label>
+                <label for="inputState" class="form_es_type">운동종류</label>
                 <select id="inputState" class="form-select">
                     <option selected>Choose...</option>
                     <option>PT 강사</option>
