@@ -166,6 +166,16 @@
       height: 55px;
     }
 
+    .pw_check {
+      position: absolute;
+      left: 66%;
+      top: 41%;
+      transform: translate(-50%, -50%);
+
+      width: 80px;
+      height: 55px;
+    }
+
     .back {
       position: absolute;
       left: 3%;
@@ -286,7 +296,6 @@
       document.getElementById('fileName').textContent = null;     //기존 파일 이름 지우기
     }
 
-
     function loadFile(input) {
       var file = input.files[0];
 
@@ -316,22 +325,78 @@
         document.getElementById('preview').src = "";
       }
     };
+    //--------------------------------------------------------
 
+    function overlap() {
+      let id = $('#new_id').val()
+      let idck = 0;
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/id_check',
+        data: {},
+        success: function (response) {
+          let rows = response['id_lists']
+
+          if (id === ''){
+            alert("아이디를 입력하세요.")
+            return false
+          }
+
+          for (let i = 0; i < rows.length; i++) {
+            if (rows[i]['new_id'] === id) {
+              idck = 1
+              break
+            } else {
+              idck = 0
+            }
+          }
+          if (idck === 1){
+            alert("중복된 아이디 입니다.")
+          } else {
+            alert("사용 가능한 아이디 입니다.")
+          }
+        }
+      })
+    }
+    //--------------------------------------------------------
+    function pw_check() {
+      var pw = $("#new_pw").val();
+      var num = pw.search(/[0-9]/g);
+      var eng = pw.search(/[a-z]/ig);
+      var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+      if (pw.length < 8 || pw.length > 20) {
+        alert("비밀번호는 8자리 ~ 20자리 이내로 입력해주세요.");
+        return false;
+      } else if (pw.search(/\s/) != -1) {
+        alert("비밀번호는 공백 없이 입력해주세요.");
+        return false;
+      } else if (num < 0 || eng < 0 || spe < 0) {
+        alert("비밀번호는 영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+        return false;
+      } else {
+        alert("통과");
+        return true;
+      }
+    }
 
     function save_info() {
+      let new_pw = $('#new_pw').val()
+
       let name = $('#name').val()
       let new_id = $('#new_id').val()
-      let new_pw = $('#new_pw').val()
       let location = $('#location').val()
       let choice = select
 
       let qualification = $('#qualification').val()
       let career = $('#career').val()
-      let img = $('#preview').val()
+      let img = $('#chooseFile').val()
 
       $.ajax({
         type: 'POST',
-        url: '/save',
+        url: '/api/save',
+        enctype: 'multipart/form-data',
         data: {
           name_give: name, new_id_give: new_id, new_pw_give: new_pw,
           location_give: location, choice_give: choice, qualification_give: qualification,
@@ -425,7 +490,10 @@
   <button class="finish" type="submit">완료</button>
 </div>
 
-<button class="id_check" type="submit">중복확인</button>
+<button class="id_check" type="submit" onclick="overlap()">중복확인</button>
+<img id="id_check_sucess" style="display: none;">
+
+<button class="pw_check" type="submit" onclick="pw_check()">검사</button>
 <button onclick="window.location.href='/'" class="back" type="submit">뒤로가기</button>
 </div>
 </body>

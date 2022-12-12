@@ -82,11 +82,28 @@
         }
 
 
-
     </style>
 
     <script>
+        function login() {
+            $.ajax({
+                type: "POST",
+                url: "/api/login",
+                data: {id_give: $('#id').val(), pw_give: $('#pw').val()},
+                success: function (response) {
+                    if (response['result'] === 'success') {
+                        alert('로그인 완료!')
+                        window.location.href = '/join'
 
+                        $.cookie('mytoken', response['token']);
+
+                    } else {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                }
+            })
+        }
     </script>
 
 </head>
@@ -110,7 +127,7 @@
             <label>PW 입력</label>
         </div>
     </div>
-    <button class="btn btn-default1" type="submit">로그인</button>
+    <button class="btn btn-default1" type="submit" onclick="login()">로그인</button>
     <button onclick="window.location.href='/join'" class="btn btn-default2" type="submit">회원가입</button>
 </div>
 </body>
