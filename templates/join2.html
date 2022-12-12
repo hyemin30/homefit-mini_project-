@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -18,79 +21,30 @@
     <title>회원가입</title>
 
     <style>
+
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
         .join {
             text-align: center;
             margin-top: 50px;
         }
 
         .information {
-            background-color: pink;
-            margin: 40px auto 0px;
+            margin: 40px auto 30px;
+            background: rgb(245, 241, 241);
+            border-radius: 20px;
 
             /*transform: translate(-50%, -50%);*/
 
             width: 500px;
 
-            background-color: pink;
             padding: 30px;
-                box-shadow: 0px 0px 30px 0px gray;
-
+            box-shadow: 0px 0px 30px 0px gray;
         }
 
-        .yn {
-            /*position: absolute;*/
-            /*left: 43%;*/
-            /*top: 54%;*/
-            /*transform: translate(-50%, -50%);*/
-        }
 
-        .yes {
-            position: absolute;
-            left: 40%;
-            top: 75%;
-            transform: translate(-50%, -50%);
-        }
-
-        .no {
-            position: absolute;
-            left: 50%;
-            top: 75%;
-            transform: translate(-50%, -50%);
-        }
-
-        .btn-default {
-            /*position: absolute;*/
-            /*left: 55%;*/
-            /*top: 57%;*/
-            /*transform: translate(-50%, -50%);*/
-
-        }
-
-        .tutor_info {
-            /*position: absolute;*/
-            /*left: 50%;*/
-            /*top: 68%;*/
-            /*transform: translate(-50%, -50%);*/
-
-            width: 500px;
-            height: 100px;
-        }
-
-        .finish {
-            /*position: absolute;*/
-            /*left: 96%;*/
-            /*top: 5%;*/
-            /*transform: translate(-50%, -50%);*/
-
-            background-color: blue;
-            border-width: medium;
-            border-color: black;
-            border-radius: 15px;
-            color: white;
-
-            width: 100px;
-            height: 60px;
-        }
 
         .id_check {
 
@@ -104,87 +58,14 @@
             height: 55px;
         }
 
-        .back {
-            /*position: absolute;*/
-            /*left: 3%;*/
-            /*top: 4.5%;*/
-            /*transform: translate(-50%, -50%);*/
-
-            width: 80px;
-            height: 55px;
-        }
-
-        .container {
-            background-color: pink;
-
-            width: 900px;
-
-            /*position: absolute;*/
-            /*left: 50%;*/
-            /*top: 85%;*/
-            /*transform: translate(-50%, -50%);*/
-
-            /*display: flex;*/
-            /*flex-direction: column;*/
-        }
-
-        .image-upload {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .button {
-            display: flex;
-            justify-content: center;
-        }
-
         label {
             cursor: pointer;
             font-size: 1em;
         }
 
-        #chooseFile {
-            visibility: hidden;
-        }
-
-        .fileContainer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .fileInput {
-            display: flex;
-            align-items: center;
-            border-bottom: solid 2px black;
-            width: 60%;
-            height: 30px;
-        }
 
         #fileName {
             margin-left: 5px;
-        }
-
-        .image-show {
-            z-index: -1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /*position: absolute;*/
-            width: 100%;
-            height: 100%;
-        }
-
-        .prev {
-            /*position: absolute;*/
-            /*left: 50%;*/
-            /*top: 200%;*/
-            /*transform: translate(-50%, -50%);*/
-
-            width: 300px;
-            height: 300px;
         }
 
         .col-md-4 {
@@ -192,18 +73,6 @@
             /*left: 50%;*/
             /*top: 137%;*/
             /*transform: translate(-50%, -50%);*/
-        }
-
-        .trash {
-            background-color: transparent;
-
-            /*position: absolute;*/
-            /*left: 50%;*/
-            /*top: 160%;*/
-            /*transform: translate(-50%, -50%);*/
-
-            width: 250px;
-            height: 250px;
         }
 
         .horizon {
@@ -242,6 +111,7 @@
         .tutorbox-btn {
             margin-top: 30px;
         }
+
         .tutor_box {
             margin-top: 30px;
         }
