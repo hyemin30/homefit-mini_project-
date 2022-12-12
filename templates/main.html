@@ -36,8 +36,10 @@
 
             font-size: 24px;
             text-align: center;
+        }
 
-            cursor: pointer;
+        input::placeholder {
+            color: white;
         }
 
         .btn {
@@ -119,7 +121,7 @@
                                                     <div class="card-body">
                                                         <h5 class="card-title" style="text-align: center">${name}</h5>
                                                         <div class="set1">
-                                                            <button onclick="review('${num}')">리뷰</button>
+                                                            <button onclick="review(${num})">리뷰</button>
                                                             <button onclick="reservation(${num})">예약</button>
                                                         </div>
                                                     </div>
@@ -133,39 +135,8 @@
 
         function review(num) {
             $.cookie('tutorNum', num);   //리뷰창으로 강사의 번호를 넘김
-            window.location = "/review"
-            // window.open('review', 'review', 'width = 500px, height= 600px, top= 300px, left= 600px')
+            window.open('review', 'review', 'width = 500px, height= 680px, top= 200px, left= 600px')
         }
-
-        function sample() {
-            let url = $('#url2').val()
-            let name = $('#name2').val()
-            let type = $('#type2').val()
-            let location = $('#location2').val()
-            let id = $('#id2').val()
-            let pw = $('#pw2').val()
-            let career = $('#career2').val()
-            let qualification = $('#qualification2').val()
-
-            $.ajax({
-                type: "POST",
-                url: "/sample/go",
-                data: {
-                    url_give: url,
-                    name_give: name,
-                    type_give: type,
-                    location_give: location,
-                    id_give: id,
-                    pw_give: pw,
-                    career_give: career,
-                    qualification_give: qualification
-                },
-                success: function (response) {
-                    alert('msg')
-                }
-            })
-        }
-
 
     </script>
 </head>
@@ -196,6 +167,9 @@
             <li class="nav-item">
                 <a class="nav-link nav-right" href="">로그아웃</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link nav-right" href="/reviews">리뷰하기</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -204,34 +178,15 @@
     <div>
         <select class="set" id="type">
             <option selected>운동</option>
-            <option value='체조'>체조</option>
-            <option value='댄스'>댄스</option>
-            <option value='피트니스'>피트니스</option>
-            <option value='이두'>이두</option>
-            <option value='복싱'>복싱</option>
-            <option value='하체'>하체</option>
+            <option value='피트니스 강사'>피트니스 강사</option>
+            <option value='요가 강사'>요가 강사</option>
+            <option value='필라테스 강사'>필라테스 강사</option>
+            <option value='재활치료사'>재활치료사</option>
+            <option value='기타'>기타</option>
         </select>
     </div>
     <div>
-        <select class="set" id="location">
-            <option selected>지역</option>
-            <option value='서울'>서울</option>
-            <option value='부산'>부산</option>
-            <option value='대구'>대구</option>
-            <option value='인천'>인천</option>
-            <option value='광주'>광주</option>
-            <option value='대전'>대전</option>
-            <option value='세종'>세종</option>
-            <option value='경기도'>경기도</option>
-            <option value='강원도'>강원도</option>
-            <option value='충청북도'>충청북도</option>
-            <option value='충청남도'>충청남도</option>
-            <option value='전라북도'>전라북도</option>
-            <option value='전라남도'>전라남도</option>
-            <option value='경상북도'>경상북도</option>
-            <option value='경상남도'>경상남도</option>
-            <option value='제주도'>제주도</option>
-        </select>
+        <input class="set" id="location" placeholder="지역">
     </div>
     <button class="set" onclick="show_tutor()">조회</button>
 </div>

@@ -133,6 +133,10 @@ def advise_read():
 
 @app.route('/review')
 def review():
+    return render_template('review.html')
+
+@app.route('/reviews')
+def reviews():
     return render_template('reviews.html')
 
 
@@ -141,7 +145,7 @@ def tutors_post():
     type_receive = request.form['type_give']
     location_receive = request.form['location_give']
 
-    if type_receive == '운동' and location_receive == '지역':
+    if type_receive == '운동' and location_receive == '':
         tutor_list = list(db.members.find({'choice': "0"}, {'_id': False}))
     else:
         tutor_list = list(
@@ -154,64 +158,15 @@ def tutors_post():
 def tutor_name():
     num_receive = int(request.form['num_give'])
 
-    tutor = list(db.tutors.find({'num': num_receive}, {'_id': False}))
+    tutor = list(db.members.find({'num': num_receive}, {'_id': False}))
 
     return jsonify({'tutor': tutor})
 
-
-@app.route("/sample/add", methods=["POST"])
-def sample_post():
-    url_receive = request.form['url_give']
-    name_receive = request.form['name_give']
-    type_receive = request.form['type_give']
-    location_receive = request.form['location_give']
-    id_receive = request.form['id_give']
-    password_receive = request.form['password_give']
-    career_receive = request.form['career_give']
-    qualification_receive = request.form['qualification_give']
-
-    num = len(list(db.tutors.find({}, {'_id': False}))) + 1
-
-    doc = {
-        'img': url_receive,
-        'name': name_receive,
-        'type': type_receive,
-        'location': location_receive,
-        'id': id_receive,
-        'password': password_receive,
-        'career': career_receive,
-        'qualification': qualification_receive,
-        'num': num
-    }
-
-    db.tutors.insert_one(doc)
-
-    return jsonify({'msg': '저장 성공'})
-
-
-@app.route("/reviewSample/add", methods=["POST"])
-def reviewsample_post():
-    tutor_receive = request.form['tutor_give']
-    member_receive = request.form['member_give']
-    content_receive = request.form['content_give']
-
-    doc = {
-        'tutor': tutor_receive,
-        'member': member_receive,
-        'content': content_receive,
-        'num': 1
-    }
-
-    db.reviews.insert_one(doc)
-
-    return jsonify({'msg': '저장 성공'})
-
-
 @app.route("/reviewTutor", methods=["POST"])
 def reviewTutor():
-    num_receive = int(request.form['num_give'])
+    id_receive = request.form['id_give']
 
-    reviews = list(db.reviews.find({'num': num_receive}, {'_id': False}))
+    reviews = list(db.review.find({'tutor': id_receive}, {'_id': False}))
 
     return jsonify({'review': reviews})
 
