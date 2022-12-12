@@ -218,22 +218,11 @@ def reviewTutor():
 
 @app.route("/advise/save", methods=["POST"])
 def advise_save():
-    cnt_receive = int(request.form['cnt_give'])  # cnt는 새로작성이 아닌 수정한 것 update해야됨
     title_receive = request.form['title_give']
     comment_receive = request.form['comment_give']
     private_receive = int(request.form['private_give'])
     member_id = request.cookies.get("memberId")
     member_receive = db.members.find_one({'new_id': member_id})
-
-    if cnt_receive:
-        num = int(request.cookies['comment_num'])
-
-        db.advise.update_one({'num': num}, {'$set': {'title': title_receive}})
-        db.advise.update_one({'num': num}, {'$set': {'comment': comment_receive}})
-        db.advise.update_one({'num': num}, {'$set': {'private': private_receive}})
-
-        return jsonify({'msg': '상담이 완료 되었습니다!'})
-
     temp = list(db.advise.find({}, {'_id': False}))
     num = 0
 
@@ -251,6 +240,7 @@ def advise_save():
         'id': member_id,
         'num': num + 1,
         'private': private_receive
+
     }
 
     db.advise.insert_one(doc)
@@ -301,11 +291,16 @@ def adviceDelete():
 
 @app.route("/advice/modify", methods=["POST"])
 def adviceModify():
-    num_receive = int(request.form['num_give'])
+    num_receive = int(request.cookies['comment_num'])
+    title_receive = request.form['title_give']
+    comment_receive = request.form['comment_give']
+    private_receive = int(request.form['private_give'])
 
-    advice = list(db.advise.find({'num': num_receive}, {'_id': False}))
+    db.advise.update_one({'num': num_receive}, {'$set': {'title': title_receive}})
+    db.advise.update_one({'num': num_receive}, {'$set': {'comment': comment_receive}})
+    db.advise.update_one({'num': num_receive}, {'$set': {'private': private_receive}})
 
-    return jsonify({'advice': advice})
+    return jsonify({'msg': '상담이 완료 되었습니다!'})
 
 
 # 이혜민
