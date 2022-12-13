@@ -169,6 +169,7 @@
             margin-top: 30px;
             display: none;
         }
+
         .id_check, .pw_check {
             background-color: #a0a6ab;
             border-color: transparent;
@@ -184,7 +185,7 @@
             target.checked = true;
         }
 
-        let select = 0 // 강사인지 일반회원인지 판별
+        let select = -1 // 강사인지 일반회원인지 판별
 
         function choice() {
 
@@ -299,6 +300,23 @@
 
         //-------------------------------------------------------
         function save_info() { //혜민님 이 함수 부분만 보시면 될 것 같아요
+            let qualification = $('#qualification').val()
+            let career = $('#career').val()
+            if (select === -1) {
+                alert('강사, 일반회원 구분을 체크하세요')
+                return false
+            } else if (select === 0) {
+                if (qualification === '') {
+                    alert("자격증을 입력하세요.")
+                    return false
+                }
+
+                if (career === '') {
+                    alert("경력을 입력하세요.")
+                    return false
+                }
+            }
+
             let new_id = $('#new_id').val()
             if (new_id === '') {
                 alert("아이디를 입력하세요.")
@@ -322,22 +340,22 @@
                 alert("지역을 입력하세요.")
                 return false
             }
-            let choice = select
+            select = choice()
 
-            let qualification = $('#qualification').val()
-            let career = $('#career').val()
-
-            if (select === 0) {
-                if (qualification === '') {
-                    alert("자격증을 입력하세요.")
-                    return false
-                }
-
-                if (career === '') {
-                    alert("경력을 입력하세요.")
-                    return false
-                }
-            }
+            // let qualification = $('#qualification').val()
+            // let career = $('#career').val()
+            //
+            // if (select === 0) {
+            //     if (qualification === '') {
+            //         alert("자격증을 입력하세요.")
+            //         return false
+            //     }
+            //
+            //     if (career === '') {
+            //         alert("경력을 입력하세요.")
+            //         return false
+            //     }
+            // }
 
             // let img = $('#chooseFile').val()
             let img = $('#img').val()

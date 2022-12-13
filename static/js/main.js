@@ -114,7 +114,7 @@ function show_navbar() {
                                 <a class="nav-link nav-right" href="/main">강사검색</a>
                             </li>
                               <li class="nav-item">
-                                <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
+                                <a class="nav-link  nav-right" href="/reservation/list">예약조회</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link  nav-right" href="/advise">상담하기</a>
@@ -126,7 +126,7 @@ function show_navbar() {
             } else if (user == 'tutor') {
                 temp_html = `
                               <li class="nav-item">
-                                <a class="nav-link  nav-right" href="reservation/list">예약조회</a>
+                                <a class="nav-link  nav-right" href="/reservation/list">예약조회</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link  nav-right" onclick="timetables()">수업등록</a>

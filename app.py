@@ -76,7 +76,15 @@ def save_info():
 
     pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
 
-    num = len(list(db.members.find({}, {'_id': False})))
+    temp = list(db.members.find({}, {'_id': False}))
+    num = 0
+
+    if len(temp) == 0:
+        num = 0
+    else:
+        for atemp in temp:
+            if atemp['num'] > num:
+                num = atemp['num']
 
     doc = {
         'name': name_receive,
