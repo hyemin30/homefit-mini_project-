@@ -136,6 +136,18 @@
     </style>
     <script>
         $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/getcookie",
+                data: {},
+                success: function (response) {
+                    let user = response['user'];
+                    if (user == null) {
+                        alert('로그인하세요');
+                        document.location = '/'
+                    }
+                }
+            })
             show_review();
             show_profile();
         });

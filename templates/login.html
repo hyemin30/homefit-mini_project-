@@ -95,7 +95,11 @@
                         document.cookie = "memberId=" + response['member_id'];
                         document.cookie = "user=" + response['user'];
                         window.location.href = '/main'
-                        $.cookie('mytoken', response['token']);
+
+                        //테스트코드
+                        document.cookie = "mytoken=" + response['token'];
+
+                        // $.cookie('mytoken', response['token']);
 
                     } else {
                         alert(response['msg'])

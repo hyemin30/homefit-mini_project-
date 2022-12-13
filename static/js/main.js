@@ -1,4 +1,17 @@
 $(document).ready(function () {
+    $.ajax({
+                type: "GET",
+                url: "/getcookie",
+                data: {},
+                success: function (response) {
+                    let user = response['user'];
+                    if (user == null) {
+                        alert('로그인하세요');
+                        document.location = '/'
+                    }
+                }
+            })
+
     show_navbar()
 });
 
@@ -9,7 +22,7 @@ function reservation(num) {
         data: {},
         success: function (response) {
             let user = response['user'];
-            if (user == '일반') {
+            if (user == 'normal') {
                 $.ajax({
                     type: "POST",
                     url: "/tutors/reservation",
@@ -96,7 +109,7 @@ function show_navbar() {
         success: function (response) {
             $('#nav-item').empty()
             let user = response['user']
-            if (user == '일반') {
+            if (user == 'normal') {
                 temp_html = `<li class="nav-item">
                                 <a class="nav-link nav-right" href="/main">강사검색</a>
                             </li>
@@ -110,7 +123,7 @@ function show_navbar() {
                                 <a class="nav-link nav-right" onclick="logout()">로그아웃</a>
                             </li>`
                 $('#nav-item').append(temp_html)
-            } else if (user == '강사') {
+            } else if (user == 'tutor') {
                 temp_html = `
                               <li class="nav-item">
                                 <a class="nav-link  nav-right" href="reservation/list">예약조회</a>

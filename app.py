@@ -6,6 +6,7 @@ from operator import itemgetter
 from datetime import datetime
 import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
+import json
 
 app = Flask(__name__)
 
@@ -111,14 +112,11 @@ def login():
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         if result['choice'] == "1":
-            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': '일반'})
+            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': 'normal'})
         else:
-            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': '강사'})
-
-
-
-
+            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': 'tutor'})
     else:
+
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
