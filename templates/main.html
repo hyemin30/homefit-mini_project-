@@ -96,6 +96,11 @@
             border-radius: 5px;
             border: none;
         }
+        .tutors-card {
+            min-width: 200px;
+            max-width: 250px;
+        }
+
     </style>
     <script>
         $(document).ready(function () {
@@ -131,7 +136,7 @@
                         let img = rows[i]['img']
                         let num = rows[i]['num']
                         let temp_html = `<div class="col">
-                                            <div class="card">
+                                            <div class="card tutors-card">
                                                 <img src="${img}" class="card-img-top" alt="...">
                                                     <div class="card-body">
                                                         <h5 class="card-title" style="text-align: center">${name}</h5>
