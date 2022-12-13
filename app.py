@@ -632,6 +632,7 @@ def my_profile():
 @app.route("/profile_save", methods=["POST"])
 def profile_post():
     tutorname_receive = request.form['tutorname_give']
+    tutorimg_recevie = request.form['tutorimg_give']
     qualifications_receive = request.form['qualifications_give']
     career_receive = request.form['career_give']
     inputstate_receive = request.form['inputstate_give']
@@ -640,6 +641,7 @@ def profile_post():
     print(inputstate_receive)
     db.members.update_one({'new_id': member_id}, {'$set': {
         'name': tutorname_receive,
+        'tutorimg': tutorimg_recevie,
         'qualification': qualifications_receive,
         'career': career_receive,
         'type': inputstate_receive
