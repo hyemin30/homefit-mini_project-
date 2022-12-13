@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang=“en” style=“background-color:#1D1E23;” ><head>
+<html lang="en" style="background-color:#1D1E23;" >
+
+<head>
     <meta charset="UTF-8">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,9 +27,27 @@
             font-family: 'Gowun Dodum', sans-serif;
         }
 
+        .bg_control{
+            background-color: #1D1E23;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            bottom: 200px;
+
+
+
+        }
+
+
         .join {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 20px;
+
+            color: white;
+
+
         }
 
         .information {
@@ -42,18 +62,40 @@
             padding: 30px;
             box-shadow: 0px 0px 30px 0px gray;
         }
+        .sj_control {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .form-floating horizon mb-3.button {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+        }
 
 
         .id_check {
+            font-size: small;
 
-            width: 110px;
-            height: 55px;
+            width: 80px;
+            height: 40px;
+            border-radius: 100px;
+        }
+
+        .form-control {
+            width: 340px;
+            margin-right: 20px;
         }
 
         .pw_check {
+            font-size: small;
 
-            width: 110px;
-            height: 55px;
+            width: 80px;
+            height: 40px;
+            border-radius: 100px;
         }
 
         label {
@@ -87,19 +129,32 @@
         .checkdiv {
             text-align: center;
             width: 100px;
+            position: relative;
+            right: 80px;
+            margin-left: 30px;
+
 
         }
 
-        .please-check {
-            width: 100px;
-        }
+        /*.please-check {*/
+        /*    width: 100px;*/
+        /*    position: relative;*/
+        /*    right: 35px;*/
+        /*}*/
 
         .checkbox {
             margin-top: 30px;
+            position: relative;
+            right: 50px;
+            top: -30px
+
         }
+
 
         .join-btn {
             text-align: center;
+            position: relative;
+            right: 30px;
         }
 
         .join-btn > button {
@@ -117,7 +172,7 @@
 
     </style>
 
-    <script>
+   <script>
         function clickCheck(target) {
             document.querySelectorAll(`input[type=checkbox]`)
                 .forEach(el => el.checked = false);
@@ -317,84 +372,96 @@
 
 </head>
 <body>
-<h1 class="join">회원가입</h1>
-<div class="information">
-    <div class="form-floating mb-3">
-        <input id="name" type="email" class="form-control" placeholder=" ">
-        <label>이름</label>
-    </div>
-    <div class="form-floating horizon mb-3">
-        <input name="username" id="new_id" type="email" class="form-control" placeholder=" ">
-        <label>ID</label>
-        <button class="id_check btn btn-outline-dark" type="submit" onclick="overlap()">중복확인</button>
-    </div>
-    <div class="form-floating horizon mb-3">
-        <input id="new_pw" type="password" class="form-control" placeholder=" ">
-        <label>PW</label>
+<nav class="navbar navbar-expand-lg navbar-dark  top-menu" style="background-color: #1D1E23;">
+    <a class="navbar-brand homefit" style="margin: 0px 0px 0px 20px">HomeFit</a> </nav>
+<div class="bg_control">
+    <h1 class="join" >회원가입</h1>
+    <div class="information">
+        <div class="sj_control">
+            <div class="form-floating mb-3">
+                <input id="name" type="email" class="form-control" placeholder=" ">
+                <label>이름</label>
+            </div>
+            <div class="form-floating horizon mb-3">
+                <input name="username" id="new_id" type="email" class="form-control" placeholder=" ">
+                <label>ID</label>
+                <button class="id_check btn btn-secondary disabled" type="submit" onclick="overlap()">중복확인</button>
+            </div>
+            <div class="form-floating horizon mb-3">
+                <input id="new_pw" type="password" class="form-control" placeholder=" ">
+                <label>PW</label>
 
-        <button class="pw_check btn btn-outline-dark" type="submit" onclick="pw_check()">검사</button>
-    </div>
-    <div class="form-floating mb-3">
-        <input id="double_pw" type="password" class="form-control" placeholder=" ">
-        <label>PW 확인</label>
-    </div>
-    <div class="form-floating mb-3">
-        <input id="location" type="email" class="form-control" placeholder=" ">
-        <label>지역</label>
-    </div>
-    <div class="form-floating horizon checkbox mb-3">
-        <span class="please-check">체크해주세요</span>
+                <button class="pw_check btn btn-secondary disabled" type="submit" onclick="pw_check()">검사</button>
+            </div>
+            <div class="form-floating mb-3">
+                <input id="double_pw" type="password" class="form-control" placeholder=" ">
+                <label>PW 확인</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input id="location" type="email" class="form-control" placeholder=" ">
+                <label>지역</label>
+            </div>
+        </div>
+        <div class="form-floating horizon checkbox mb-3">
+<!--            <span class="please-check">체크해주세요</span>-->
 
-        <div class="checkdiv">
-            <input type='checkbox' class="form-check-input"
-                   name='checkbox'
-                   value='tutor'
-                   onclick='checkOnlyOne(this)'/>
-            <span>강사</span>
+            <div class="checkdiv">
+                <input type='checkbox' class="form-check-input"
+                       name='checkbox'
+                       value='tutor'
+                       onclick='checkOnlyOne(this)'/>
+                <span>강사</span>
+            </div>
+
+            <div class="checkdiv">
+                <input type='checkbox' class="form-check-input"
+                       name='checkbox'
+                       value='member'
+                       onclick='checkOnlyOne(this)'/>
+                <span>일반회원</span>
+            </div>
+            <svg onclick="choice()" type="submit" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                 class="bi bi-check2-circle" viewBox="0 0 16 16" style="color: limegreen">
+                <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+                <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+            </svg>
+
+<!--            <button onclick="choice()" class="btn btn-outline-dark ok" type="submit">확인</button>-->
         </div>
 
-        <div class="checkdiv">
-            <input type='checkbox' class="form-check-input"
-                   name='checkbox'
-                   value='member'
-                   onclick='checkOnlyOne(this)'/>
-            <span>일반회원</span>
-        </div>
-        <button onclick="choice()" class="btn btn-outline-dark ok" type="submit">확인</button>
-    </div>
-
-    <div class="join-btn" id="join-btn">
-        <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
-        <button class="btn btn-primary" type="submit" onclick="save_info()">완료</button>
-    </div>
-
-    <div class="tutor_box">
-        <div class="form-floating mb-3">
-            <input id="img" type="email" class="form-control" placeholder=" ">
-            <label>프로필 이미지URL</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input id="qualification" type="email" class="form-control" placeholder=" ">
-            <label>자격증</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input id="career" type="email" class="form-control" placeholder=" ">
-            <label>경력</label>
-        </div>
-        <div class="col-md-4">
-            <p>강사종류</p>
-            <select id="inputState" class="form-select" onchange="">
-                <option value="pt">피트니스 강사</option>
-                <option value="yoga">요가 강사</option>
-                <option value="filates">필라테스 강사</option>
-                <option value="rhb">재활치료사</option>
-                <option value="etc">기타</option>
-            </select>
-        </div>
-        <div class="join-btn tutorbox-btn">
+        <div class="join-btn" id="join-btn">
             <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
-            <button class="btn btn-primary" type="submit" onclick="save_info()">완료</button>
+            <button class="btn btn-primary" type="submit" onclick="save_info()" style="width: 82.64px">완료</button>
+        </div>
+
+        <div class="tutor_box">
+            <div class="form-floating mb-3">
+                <input id="img" type="email" class="form-control" placeholder=" ">
+                <label>프로필 이미지URL</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input id="qualification" type="email" class="form-control" placeholder=" ">
+                <label>자격증</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input id="career" type="email" class="form-control" placeholder=" ">
+                <label>경력</label>
+            </div>
+            <div class="col-md-4">
+                <p>강사종류</p>
+                <select id="inputState" class="form-select" onchange="">
+                    <option value="pt">피트니스 강사</option>
+                    <option value="yoga">요가 강사</option>
+                    <option value="filates">필라테스 강사</option>
+                    <option value="rhb">재활치료사</option>
+                    <option value="etc">기타</option>
+                </select>
+            </div>
+            <div class="join-btn tutorbox-btn">
+                <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
+                <button class="btn btn-primary" type="submit" onclick="save_info()" style="width: 82.64px">완료</button>
+            </div>
         </div>
     </div>
 </div>
