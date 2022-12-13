@@ -30,7 +30,6 @@ SECRET_KEY = 'SPARTA'
 def checkmember():
     member_id = request.cookies.get('memberId')
     member = db.members.find_one({'new_id': member_id})
-    print(member)
     if member['choice'] == "1":
         return jsonify({'msg': '일반'})
     else:
@@ -147,9 +146,7 @@ def api_valid():
 
 @app.route('/api/id_check', methods=['GET'])
 def id_check():
-    print('함수호출')
     id_list = list(db.members.find({}, {'_id': False}))
-    print(id_list)
     return jsonify({'id_lists': id_list})
 
 
@@ -344,10 +341,7 @@ def reservation():
     date_receive = request.form['date_give']
 
     num = request.cookies.get("tutorNum")
-    print(num)
-    print(type(num))
     tutor = db.members.find_one({'num': int(num), 'choice': "0"})
-    print('찾을거야', tutor)
     data = list(db.timetables.find({'tutor': tutor['new_id'], 'date': date_receive}, {'_id': False}))
     timetables = sorted(data, key=itemgetter('time'))
     return jsonify({'timetables': timetables})
@@ -638,13 +632,13 @@ def profile_post():
     inputstate_receive = request.form['inputstate_give']
     member_id = request.cookies.get("memberId")
 
-    print(inputstate_receive)
     db.members.update_one({'new_id': member_id}, {'$set': {
         'name': tutorname_receive,
         'tutorimg': tutorimg_recevie,
         'qualification': qualifications_receive,
         'career': career_receive,
-        'type': inputstate_receive
+        'type': inputstate_receive,
+        'img': tutorimg_recevie
     }})
 
     return jsonify({'msg': '✅ 등록 완료!'})
