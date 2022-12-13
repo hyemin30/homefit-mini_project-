@@ -215,6 +215,7 @@
 
         function save_btn() {
             let tutorname = $('#tutorname').val()
+            let tutorimg = $('#tutorimg').val()
             let qualifications = $('#qualifications').val()
             let career = $('#career').val()
             let inputstate = $('#inputState').val()
@@ -225,6 +226,7 @@
                 url: '/profile_save',
                 data: {
                     'tutorname_give': tutorname,
+                    'tutorimg_give': tutorimg,
                     'qualifications_give': qualifications,
                     'career_give': career,
                     'inputstate_give': inputstate
@@ -244,11 +246,13 @@
                 success: function (response) {
                     let member = response['member'][0]
                     let name = member['name']
+                    let tutorimg = member['tutorimg']
                     let qualifications = member['qualification']
                     let career = member['career']
                     let type = member['type']
 
                     $('#tutorname').val(name)
+                    $('#tutorimg').val(tutorimg)
                     $('#qualifications').val(qualifications)
                     $('#career').val(career)
                     $('#inputState').val(type)
@@ -309,6 +313,10 @@
                 <label for="tutorname" class="form-label">이름</label>
                 <input type="email" class="form-control" id="tutorname" placeholder="name">
             </div>
+             <div class="col-md-12">
+                <label for="tutorimg" class="form-label">사진 url</label>
+                <input type="url" class="form-control" id="tutorimg" placeholder="image url">
+            </div>
             <div class="col-md-12">
                 <label for="qualifications" class="form-label">자격사항</label>
                 <textarea class="form-control" id="qualifications" rows="5" placeholder="qualifications"></textarea>
@@ -338,14 +346,7 @@
 
         </form>
     </div>
-    <div class="upload_box">
-        <div class="uploadImg">
-            <img id="previewImg" onclick="popImage(this.src)">
-            <div class="img_text">no image</div>
-            <div class="filebox">
-                <input class="upload-name" value="선택된 파일 없음" disabled="disabled">
-                <input type="file" id="file1" class="upload-hidden" name="file1">
-                <label for="file1">이미지 첨부</label>
+
             </div>
         </div>
     </div>
