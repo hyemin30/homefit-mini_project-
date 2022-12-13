@@ -31,7 +31,7 @@ function reservation(num) {
                         location.href = "/tutors/reservation"
                     }
                 });
-            } else {
+            } else if (user == 'tutor') {
                 alert('일반회원만 이용 가능합니다')
             }
         }

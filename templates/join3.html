@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background-color:#1D1E23;" >
+<html lang="en" style="background-color:#1D1E23;">
 
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
             font-family: 'Gowun Dodum', sans-serif;
         }
 
-        .bg_control{
+        .bg_control {
             background-color: #1D1E23;
             display: flex;
             flex-direction: column;
@@ -35,7 +35,6 @@
             justify-content: center;
 
             bottom: 200px;
-
 
 
         }
@@ -62,6 +61,7 @@
             padding: 30px;
             box-shadow: 0px 0px 30px 0px gray;
         }
+
         .sj_control {
             display: flex;
             flex-direction: column;
@@ -169,10 +169,14 @@
             margin-top: 30px;
             display: none;
         }
+        .id_check, .pw_check {
+            background-color: #a0a6ab;
+            border-color: transparent;
+        }
 
     </style>
 
-   <script>
+    <script>
         function clickCheck(target) {
             document.querySelectorAll(`input[type=checkbox]`)
                 .forEach(el => el.checked = false);
@@ -199,7 +203,7 @@
                 $('#join-btn').empty()
                 let temp_html = `
                         <button onclick="window.location.href='/'" class="btn btn-secondary" type="submit">뒤로가기</button>
-                        <button class="btn btn-primary" type="submit" onclick="save_info()">완료</button>`
+                        <button class="btn btn-primary" type="submit" onclick="save_info()" style="width: 82.64px">완료</button>`
                 $('#join-btn').append(temp_html)
 
                 $('.tutor_box').hide()
@@ -269,7 +273,6 @@
             })
         }
 
-        //--------------------------------------------------------
         function pw_check() {
             var pw = $("#new_pw").val();
             var num = pw.search(/[0-9]/g);
@@ -373,9 +376,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark  top-menu" style="background-color: #1D1E23;">
-    <a class="navbar-brand homefit" style="margin: 0px 0px 0px 20px">HomeFit</a> </nav>
+    <a class="navbar-brand homefit" style="margin: 0px 0px 0px 20px">HomeFit</a></nav>
 <div class="bg_control">
-    <h1 class="join" >회원가입</h1>
+    <h1 class="join">회원가입</h1>
     <div class="information">
         <div class="sj_control">
             <div class="form-floating mb-3">
@@ -385,13 +388,13 @@
             <div class="form-floating horizon mb-3">
                 <input name="username" id="new_id" type="email" class="form-control" placeholder=" ">
                 <label>ID</label>
-                <button class="id_check btn btn-secondary disabled" type="submit" onclick="overlap()">중복확인</button>
+                <button class="id_check btn btn-secondary" type="button" onclick="overlap()">중복확인</button>
             </div>
             <div class="form-floating horizon mb-3">
                 <input id="new_pw" type="password" class="form-control" placeholder=" ">
                 <label>PW</label>
 
-                <button class="pw_check btn btn-secondary disabled" type="submit" onclick="pw_check()">검사</button>
+                <button class="pw_check btn btn-secondary" type="submit" onclick="pw_check()">검사</button>
             </div>
             <div class="form-floating mb-3">
                 <input id="double_pw" type="password" class="form-control" placeholder=" ">
@@ -402,8 +405,9 @@
                 <label>지역</label>
             </div>
         </div>
+
         <div class="form-floating horizon checkbox mb-3">
-<!--            <span class="please-check">체크해주세요</span>-->
+            <!--            <span class="please-check">체크해주세요</span>-->
 
             <div class="checkdiv">
                 <input type='checkbox' class="form-check-input"
@@ -420,13 +424,14 @@
                        onclick='checkOnlyOne(this)'/>
                 <span>일반회원</span>
             </div>
-            <svg onclick="choice()" type="submit" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+            <svg onclick="choice()" type="submit" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                 fill="currentColor"
                  class="bi bi-check2-circle" viewBox="0 0 16 16" style="color: limegreen">
                 <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
                 <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
             </svg>
 
-<!--            <button onclick="choice()" class="btn btn-outline-dark ok" type="submit">확인</button>-->
+            <!--            <button onclick="choice()" class="btn btn-outline-dark ok" type="submit">확인</button>-->
         </div>
 
         <div class="join-btn" id="join-btn">
