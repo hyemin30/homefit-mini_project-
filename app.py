@@ -54,6 +54,7 @@ def logout():
     res.delete_cookie('tutorNum')
     res.delete_cookie('user')
     res.delete_cookie('memberId')
+    res.delete_cookie('mytoken')
 
     return res
 
@@ -103,6 +104,7 @@ def login():
     pw_hash = hashlib.sha256(new_pw_receive.encode('utf-8')).hexdigest()
 
     result = db.members.find_one({'new_id': new_id_receive, 'new_pw': pw_hash})
+    print('결과는', result)
 
     if result is not None:
         payload = {
@@ -110,11 +112,12 @@ def login():
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        print('토큰 타입은 = ',  type(token))
 
         if result['choice'] == "1":
-            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': 'normal'})
+            return jsonify({'result': 'success', 'token': token.decode('utf-8'), 'member_id': new_id_receive, 'user': 'normal'})
         else:
-            return jsonify({'result': 'success', 'token': token, 'member_id': new_id_receive, 'user': 'tutor'})
+            return jsonify({'result': 'success', 'token': token.decode('utf-8'), 'member_id': new_id_receive, 'user': 'tutor'})
     else:
 
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
