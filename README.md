@@ -1,6 +1,5 @@
 # homefit-mini_project-
 
-풀스택 미니프로젝트 1:1 홈트레이닝 예약 사이트 - 홈핏
 
 ![frame](https://user-images.githubusercontent.com/116478121/209470043-b9610595-0388-4514-8264-47dc3dca6907.PNG)
 
